@@ -26,7 +26,12 @@ repositories {
         url = "https://repo.rosewooddev.io/repository/public/"
     }
 }
-
+task printVersion {
+    doLast {
+        def versionFile = new File(System.getenv("GITHUB_ENV"))
+        versionFile.append("VERSION=${project.version}\n")
+    }
+}
 dependencies {
     compileOnly "org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT"
     //compileOnly fileTree("Module-NMS-V1_12_R1/lib")
