@@ -23,11 +23,15 @@ jobs:
       - name: Make Gradle Wrapper Executable
         run: chmod +x ./gradlew
 
+      - name: print version
+        id: build
+        run: ./gradlew printVersion
+
       - name: Build with Gradle
         run: ./gradlew build
 
       - name: Capture Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: BukkitPlugin-${{ github.sha }}
+          name: BukkitPlugin-${{ env.VERSION }}
           path: build/libs/*.jar # 假设生成的 JAR 文件位于 build/libs 目录下
