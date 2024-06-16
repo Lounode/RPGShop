@@ -33,5 +33,5 @@ jobs:
       - name: Capture Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: BukkitPlugin-${{ env.VERSION }}
+          name: RPGShop-${{ env.VERSION }}
           path: build/libs/*.jar # 假设生成的 JAR 文件位于 build/libs 目录下
