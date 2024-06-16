@@ -1,0 +1,24 @@
+name: RPGShop
+version: 1.0.0
+main: github.lounode.rpgshop.RPGShop
+author: Lounode
+api-version: 1.12.2
+softdepend:
+  - PlaceholderAPI
+  - Vault
+  - PlayerPoints
+  - Citizens
+commands:
+  rpgshop:
+    aliases:
+      - rs
+    permission: rpgshop.admin
+permissions:
+  rpgshop.admin:
+    default: op
+  rpgshop.open:
+    default: true
+  rpgshop.buy:
+    default: true
+  rpgshop.sell:
+    default: true
