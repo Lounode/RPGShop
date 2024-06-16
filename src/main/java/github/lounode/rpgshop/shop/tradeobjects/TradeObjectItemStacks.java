@@ -7,7 +7,7 @@ import github.lounode.rpgshop.shop.TradeType;
 import github.lounode.rpgshop.utils.ItemPair;
 import github.lounode.rpgshop.utils.ItemStackCounter;
 import github.lounode.rpgshop.utils.ItemUtil;
-import javafx.util.Pair;
+import github.lounode.rpgshop.utils.Pair;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;

@@ -1,12 +1,12 @@
 package github.lounode.rpgshop.utils;
 
-import javafx.util.Pair;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+
 
 /**
  * comments:<br>
