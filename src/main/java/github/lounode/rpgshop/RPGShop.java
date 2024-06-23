@@ -46,7 +46,8 @@ public final class RPGShop extends JavaPlugin {
     public boolean isPlayerPoints() {
         return playerPoints;
     }
-
+    //TODO 语言文件归一化
+    //TODO 命令打开与NPC绑定
 
 
     @Override

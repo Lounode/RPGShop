@@ -3,6 +3,8 @@ package github.lounode.rpgshop.i18n;
 import java.util.List;
 
 public class RPGI18N extends I18N{
+    public static RPGI18NMessage MESSAGE_NOT_FOUND_SHOP_ID;
+    public static RPGI18NMessage HELP_OPEN;
     public static RPGI18NMessage MESSAGE_DELETE_HELP;
     public static RPGI18NMessage MESSAGE_SAVE_FAIL;
     public static RPGI18NMessage MESSAGE_REASON_ALREADY;
@@ -121,6 +123,7 @@ public class RPGI18N extends I18N{
         MESSAGE_SAVE_FAIL = register("MESSAGE.SAVE_FAIL", "{PREFIX} &c保存 {0} 失败，原因: {1}").addLanguage("en_us", "{PREFIX} &cFailed to save {0}, reason: {1}");
         MESSAGE_REASON_ALREADY = register("MESSAGE.REASON_ALREADY", "&c文件已存在").addLanguage("en_us", "&cFile already exists");
         MESSAGE_DELETE_HELP = register("MESSAGE.DELETE_HELP", "&c用法: /rpgshop delete <id> - 删除指定ID的商店").addLanguage("en_us", "&cUsage: /rpgshop delete <id> - Delete specified shop");
+        MESSAGE_NOT_FOUND_SHOP_ID = register("MESSAGE.NOT_FOUND_SHOP", "&c找不到商店").addLanguage("en_us", "&cShop not found.");
 
         BUTTON_SWITCH_BUY = register("GUI.BUTTON.SWITCH_BUY", "&a输入").addLanguage("en_us", "&aInput");
         BUTTON_SWITCH_SELL = register("GUI.BUTTON.SWITCH_SELL", "&c输出").addLanguage("en_us", "&cOutput");
@@ -137,6 +140,7 @@ public class RPGI18N extends I18N{
         HELP_RESLOT = register("COMMON.HELP_RESLOT", "&a/rpgshop reslot <id> <old-slot> <new-slot> - &f交换两个交易格的位置").addLanguage("en_us", "&a/rpgshop reslot <id> <old-slot> <new-slot> - &fSwap trade slots");
         HELP_RESIZE = register("COMMON.HELP_RESIZE", "&a/rpgshop resize <id> <row> - &f重设商店的大小").addLanguage("en_us", "&a/rpgshop resize <id> <row> - &fResize shop");
         HELP_DELETE = register("COMMON.HELP_DELETE", "&a/rpgshop delete <id> - &f删除指定ID的商店").addLanguage("en_us", "&a/rpgshop delete <id> - &fDelete specified shop");
+        HELP_OPEN = register("COMMON.HELP_OPEN", "&a/rpgshop open <id> - &f打开商店").addLanguage("en_us", "&a/rpgshop open <id>  - &fOpen the shop");
 
         EDITOR_TITLE = register("SHOP.EDITOR_TITLE", "&b&lRPGShop 编辑器").addLanguage("en_us", "&b&lRPGShop Editor");
         BUTTON_NEXT = register("SHOP.BUTTON_NEXT", "&f&l下一页").addLanguage("en_us", "&f&lNext Page");
@@ -201,7 +205,7 @@ public class RPGI18N extends I18N{
         INFO_ITEM_REWARD = register("SHOP.TRADE.INFO_ITEM_REWARD", "&e&m------&e&l 【已设置获得】 &e&m------").addLanguage("en_us", "&e&m------&e&l 【Set Reward】 &e&m------");
         INFO_CAN_BUY = register("SHOP.TRADE.INFO_CAN_BUY", "&e状态: ").addLanguage("en_us", "&eStatus: ");
         INFO_CAN_SELL = register("SHOP.TRADE.INFO_CAN_SELL", "&e状态: ").addLanguage("en_us", "&eStatus: ");
-        INFO_CAN_INFINITY = register("SHOP.TRADE.INFO_CAN_INFINITY", "&e状态: ").addLanguage("en_us", "&eStatus: ");
+        INFO_CAN_INFINITY = register("SHOP.TRADE.INFO_CAN_INFINITY", "&e状态: {0}").addLanguage("en_us", "&eStatus: ");
         INFO_STATUS_ENABLED = register("SHOP.TRADE.INFO_STATUS_ENABLED", "&a启用").addLanguage("en_us", "&aEnabled");
         INFO_STATUS_DISABLED = register("SHOP.TRADE.INFO_STATUS_DISABLED", "&c关闭").addLanguage("en_us", "&cDisabled");
         MESSAGE_INPUT_CHAT = register("SHOP.TRADE.MESSAGE_INPUT_CHAT", "{PREFIX} &a在聊天栏中键入 &e{0} &a行 &e{1} &a，按回车发送").addLanguage("en_us", "{PREFIX} &aType &e{0} &a line &e{1} &a in the chat and press Enter");

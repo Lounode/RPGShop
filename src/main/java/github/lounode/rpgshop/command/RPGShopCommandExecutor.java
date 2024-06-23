@@ -24,6 +24,7 @@ public class RPGShopCommandExecutor implements CommandExecutor {
         this.subCommands.add(new RPGShopRenameCommand(plugin));
         this.subCommands.add(new RPGShopEditorCommand(plugin));
         this.subCommands.add(new RPGShopTestCommand(plugin));
+        this.subCommands.add(new RPGShopOpenCommand(plugin));
 
         for(RPGShopCommand command : subCommands) {
             Bukkit.getPluginManager().registerEvents(command, plugin);

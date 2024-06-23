@@ -35,7 +35,7 @@ public class EditorTrade {
     }
     public void open(Player editor) {
         MultiPageInventory editTradeGUI = new MultiPageInventory(RPGShop.getInstance().guiManager, 54,
-                RPGI18N.TRADE_TITLE_NEW.get(trade.getShop().getTitle()),
+                RPGI18N.TRADE_TITLE_NEW.get(trade.getShop().getTitle(), trade.getSaleSlot()),
                 false);
         //Init
         ItemStack fill = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);//GRAY
