@@ -1,11 +1,15 @@
 package github.lounode.rpgshop;
 
 import github.lounode.rpgshop.command.RPGShopCommandExecutor;
+import github.lounode.rpgshop.datagen.RPGShopDataGenerator;
 import github.lounode.rpgshop.gui.GUIManager;
 import github.lounode.rpgshop.shop.Shop;
 import github.lounode.rpgshop.shop.ShopManager;
 import github.lounode.rpgshop.shop.Trade;
+import github.lounode.rpgshop.shop.tradeobjects.TradeObjectExpLevel;
 import github.lounode.rpgshop.shop.tradeobjects.TradeObjectItemStacks;
+import github.lounode.rpgshop.shop.tradeobjects.TradeObjectMoney;
+import github.lounode.rpgshop.shop.tradeobjects.TradeObjectPlayerPoints;
 import github.lounode.rpgshop.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,12 +26,14 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public final class RPGShop extends JavaPlugin {
     private static RPGShop instance;
+    private final RPGShopDataGenerator DATA_GENERATOR = new RPGShopDataGenerator(this);
     private static final int PLUGIN_ID = 21967;
     private final Metrics metrics = new Metrics(this, PLUGIN_ID);
     private static final String VAULT = "Vault";
     private static final String PLAYER_POINTS = "PlayerPoints";
     private boolean vault;
     private boolean playerPoints;
+    public YmlManager ymlManager = new YmlManager(this, getDataFolder());
     public ConfigManager configManager = new ConfigManager();
     public ShopManager shopManager = new ShopManager();
     public GUIManager guiManager = new GUIManager();
@@ -50,9 +56,19 @@ public final class RPGShop extends JavaPlugin {
         ConfigurationSerialization.registerClass(ItemPair.class, "ItemPair");
         ConfigurationSerialization.registerClass(Shop.class, "Shop");
         ConfigurationSerialization.registerClass(Trade.class, "Trade");
-        ConfigurationSerialization.registerClass(TradeObjectItemStacks.class, "TradeObject");
+        //TradeObjects
+        ConfigurationSerialization.registerClass(TradeObjectItemStacks.class, "TradeObjectItemStacks");
+        ConfigurationSerialization.registerClass(TradeObjectMoney.class, "TradeObjectMoney");
+        ConfigurationSerialization.registerClass(TradeObjectPlayerPoints.class, "TradeObjectPlayerPoints");
+        ConfigurationSerialization.registerClass(TradeObjectExpLevel.class, "TradeObjectItemExpLevel");
 
         getLogger().info(getWelcome());
+        if (isDebugVersion()) {
+            DATA_GENERATOR.onInitializeDataGenerator();
+            DATA_GENERATOR.generatorAll();
+        }
+
+        ymlManager.reloadYmls();
 
         if (Bukkit.getPluginManager().isPluginEnabled(VAULT)) {
             try {
@@ -87,7 +103,13 @@ public final class RPGShop extends JavaPlugin {
         ConfigurationSerialization.unregisterClass("ItemPair");
         ConfigurationSerialization.unregisterClass("Trade");
         ConfigurationSerialization.unregisterClass("Shop");
-        ConfigurationSerialization.unregisterClass("TradeObject");
+        //TradeObjects
+        ConfigurationSerialization.unregisterClass("TradeObjectItemStacks");
+        ConfigurationSerialization.unregisterClass("TradeObjectMoney");
+        ConfigurationSerialization.unregisterClass("TradeObjectPlayerPoints");
+        ConfigurationSerialization.unregisterClass("TradeObjectItemExpLevel");
+
+
         configManager.onDisable();
         shopManager.onDisable();
     }

@@ -5,6 +5,7 @@ import github.lounode.rpgshop.event.RSShopTradeEvent;
 import github.lounode.rpgshop.gui.Button;
 import github.lounode.rpgshop.gui.ButtonClickEvent;
 import github.lounode.rpgshop.gui.MultiPageInventory;
+import github.lounode.rpgshop.i18n.RPGI18N;
 import github.lounode.rpgshop.shop.Shop;
 import github.lounode.rpgshop.shop.Trade;
 import github.lounode.rpgshop.shop.TradeType;
@@ -88,7 +89,7 @@ public class GUIShop {
                     return false;
                 }
             }
-            player.sendMessage(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.MESSAGE_TRADE_SUCCESS"));
+            player.sendMessage(RPGI18N.MESSAGE_TRADE_SUCCESS.get());
 
             for(TradeObject require : requires) {
                 require.executeInput(player);
@@ -103,7 +104,7 @@ public class GUIShop {
                     return false;
                 }
             }
-            player.sendMessage(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.MESSAGE_TRADE_SUCCESS"));
+            player.sendMessage(RPGI18N.MESSAGE_TRADE_SUCCESS.get());
 
             for (TradeObject reward : rewards) {
                 reward.executeInput(player);

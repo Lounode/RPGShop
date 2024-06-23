@@ -1,6 +1,7 @@
 package github.lounode.rpgshop.command;
 
 import github.lounode.rpgshop.RPGShop;
+import github.lounode.rpgshop.i18n.RPGI18N;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -40,7 +41,7 @@ public class RPGShopCommandExecutor implements CommandExecutor {
                 continue;
             }
             if (subcommand.playerOnly && !(sender instanceof Player)) {
-                sender.sendMessage(plugin.configManager.getI18NMsg("ADMIN.NO_CONSOLE"));
+                sender.sendMessage(RPGI18N.NO_CONSOLE.get());
                 return false;
             }
             if (subcommand.onCommand(sender, command, label, args)) {
@@ -49,7 +50,7 @@ public class RPGShopCommandExecutor implements CommandExecutor {
                 return false;
             }
         }
-        sender.sendMessage(plugin.configManager.getI18NMsg("ADMIN.NO_CMD", args[0]));
+        sender.sendMessage(RPGI18N.NO_CMD.get(args[0]));
         return false;
     }
 }

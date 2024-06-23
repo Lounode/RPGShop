@@ -1,6 +1,7 @@
 package github.lounode.rpgshop.shop;
 
 import github.lounode.rpgshop.RPGShop;
+import github.lounode.rpgshop.i18n.RPGI18N;
 import github.lounode.rpgshop.shop.tradeobjects.TradeObject;
 import github.lounode.rpgshop.shop.tradeobjects.TradeObjectItemStacks;
 import org.bukkit.Material;
@@ -64,23 +65,23 @@ public class Trade implements Cloneable, ConfigurationSerializable {
         //Footer
         List<String> additionalFooter = new ArrayList<>();
         additionalFooter.add("§r");
-        additionalFooter.add(plugin.configManager.getI18NMsg("SHOP.FOOTER.REWARD"));
-        for (TradeObject reward : getRewards()) {
-            List<String> message = reward.getFooters(TradeType.BUY,this, viewer);
-            additionalFooter.addAll(message);
-        }
-        additionalFooter.add(plugin.configManager.getI18NMsg("SHOP.FOOTER.REQUIRE"));
+        additionalFooter.add(RPGI18N.FOOTER_REQUIRE.get());
         for (TradeObject require : getRequires()) {
             List<String> message = require.getFooters(TradeType.SELL,this, viewer);
             additionalFooter.addAll(message);
         }
+        additionalFooter.add(RPGI18N.FOOTER_REWARD.get());
+        for (TradeObject reward : getRewards()) {
+            List<String> message = reward.getFooters(TradeType.BUY,this, viewer);
+            additionalFooter.addAll(message);
+        }
         additionalFooter.add("§r");
         if (canBuy() && canSell()) {
-            additionalFooter.add(plugin.configManager.getI18NMsg("SHOP.FOOTER.TUTORIAL"));
+            additionalFooter.add(RPGI18N.FOOTER_TUTORIAL.get());
         } else if (canBuy() && !canSell()) {
-            additionalFooter.add(plugin.configManager.getI18NMsg("SHOP.FOOTER.TUTORIAL_BUY-ONLY"));
+            additionalFooter.add(RPGI18N.FOOTER_TUTORIAL_BUY_ONLY.get());
         } else if (!canBuy() && canSell()) {
-            additionalFooter.add(plugin.configManager.getI18NMsg("SHOP.FOOTER.TUTORIAL_SELL-ONLY"));
+            additionalFooter.add(RPGI18N.FOOTER_TUTORIAL_SELL_ONLY.get());
         }
 
 
@@ -100,7 +101,18 @@ public class Trade implements Cloneable, ConfigurationSerializable {
 
         List<String> additionalFooter = new ArrayList<>();
         additionalFooter.add("§r");
-        additionalFooter.add(plugin.configManager.getI18NMsg("SHOP.FOOTER.EDIT"));
+        additionalFooter.add(RPGI18N.FOOTER_EDIT.get());
+        additionalFooter.add("§r");
+        additionalFooter.add(RPGI18N.FOOTER_REQUIRE.get());
+        for (TradeObject require : getRequires()) {
+            List<String> message = require.getFooters(TradeType.SELL,this, viewer, true);
+            additionalFooter.addAll(message);
+        }
+        additionalFooter.add(RPGI18N.FOOTER_REWARD.get());
+        for (TradeObject reward : getRewards()) {
+            List<String> message = reward.getFooters(TradeType.BUY,this, viewer, true);
+            additionalFooter.addAll(message);
+        }
 
 
 

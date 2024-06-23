@@ -2,6 +2,7 @@ package github.lounode.rpgshop.command;
 
 import github.lounode.rpgshop.RPGShop;
 import github.lounode.rpgshop.event.RSReloadEvent;
+import github.lounode.rpgshop.i18n.RPGI18N;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -20,11 +21,11 @@ public class RPGShopReloadCommand extends RPGShopCommand{
 
         }
         if (plugin.configManager.reloadConfigs()){
-            sender.sendMessage(plugin.configManager.getI18NMsg("ADMIN.PLUGIN_RELOAD",
-                    String.valueOf((System.currentTimeMillis() - startTime))));
+            float time = System.currentTimeMillis() - startTime;
+            sender.sendMessage(RPGI18N.PLUGIN_RELOAD.get(time));
             return true;
         }
-        sender.sendMessage(plugin.configManager.getI18NMsg("ADMIN.PLUGIN_RELOAD_FAIL"));
+        sender.sendMessage(RPGI18N.PLUGIN_RELOAD_FAIL.get());
         return false;
     }
 }

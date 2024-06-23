@@ -79,7 +79,10 @@ public abstract class TradeObject implements Cloneable, ConfigurationSerializabl
      * @author Lounode
      * @date 2024/05/16
      */
-    public abstract List<String> getFooters(TradeType type, Trade trade, Player viewer);
+    public List<String> getFooters(TradeType type, Trade trade, Player viewer) {
+        return getFooters(type, trade, viewer, false);
+    }
+    public abstract List<String> getFooters(TradeType type, Trade trade, Player viewer, boolean forceNorm);
 
     /**
      * comments:

@@ -1,5 +1,6 @@
 package github.lounode.rpgshop.shop;
 
+import com.google.common.base.Strings;
 import github.lounode.rpgshop.utils.Formater;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -17,6 +18,41 @@ public class Shop implements Cloneable, ConfigurationSerializable {
     private int row;
     private String createTime;
     private String owner;
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getLastEditTime() {
+        return lastEditTime;
+    }
+
+    public void setLastEditTime(String lastEditTime) {
+        this.lastEditTime = lastEditTime;
+    }
+
+    public String getLastEditor() {
+        return lastEditor;
+    }
+
+    public void setLastEditor(String lastEditor) {
+        this.lastEditor = lastEditor;
+    }
+
+    private String lastEditTime;
+    private String lastEditor;
     private Inventory lastInv;
     private List<Trade> trades = new ArrayList<>();
     public Shop(String id, int row, String title) {
@@ -39,6 +75,9 @@ public class Shop implements Cloneable, ConfigurationSerializable {
 
     public String getSourceTitle() {
         return name;
+    }
+    public void setTitle(String title) {
+        this.name = title;
     }
     public String getTitle() {
         return Formater.FormatMessage(name);
@@ -78,6 +117,11 @@ public class Shop implements Cloneable, ConfigurationSerializable {
         result.put("title", getSourceTitle());
         result.put("row", getRows());
 
+        result.put("owner", getOwner());
+        result.put("create_time", getCreateTime());
+        result.put("last_editor", getLastEditor());
+        result.put("last_edit_time", getLastEditTime());
+
         result.put("trades", getTrades());
 
         return result;
@@ -89,6 +133,27 @@ public class Shop implements Cloneable, ConfigurationSerializable {
         String id = (String) args.get("id");
 
         Shop shop = new Shop(id,row, title);
+
+        String owner = null;
+        if (args.containsKey("owner")) {
+            owner = Strings.isNullOrEmpty((String) args.get("owner")) ? null : (String) args.get("owner");
+        }
+        shop.setOwner(owner);
+        String createTime = null;
+        if (args.containsKey("create_time")) {
+            createTime = Strings.isNullOrEmpty((String) args.get("create_time")) ? null: (String) args.get("create_time");
+        }
+        shop.setCreateTime(createTime);
+        String lastEditor = null;
+        if (args.containsKey("last_editor")) {
+            lastEditor = Strings.isNullOrEmpty((String) args.get("last_editor")) ? null : (String) args.get("last_editor");
+        }
+        shop.setLastEditor(lastEditor);
+        String lastEditTime = null;
+        if (args.containsKey("last_edit_time")) {
+            lastEditTime = Strings.isNullOrEmpty((String) args.get("last_edit_time")) ? null : (String) args.get("last_edit_time");
+        }
+        shop.setLastEditTime(lastEditTime);
 
         if (args.containsKey("trades")) {
             Object raw = args.get("trades");

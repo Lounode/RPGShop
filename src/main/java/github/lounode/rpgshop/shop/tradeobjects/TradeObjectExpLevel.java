@@ -1,8 +1,8 @@
 package github.lounode.rpgshop.shop.tradeobjects;
 
-import github.lounode.rpgshop.RPGShop;
 import github.lounode.rpgshop.chat.ChatHandle;
 import github.lounode.rpgshop.gui.guis.EditorTrade;
+import github.lounode.rpgshop.i18n.RPGI18N;
 import github.lounode.rpgshop.shop.Trade;
 import github.lounode.rpgshop.shop.TradeType;
 import github.lounode.rpgshop.utils.ExpAPI;
@@ -72,11 +72,11 @@ public class TradeObjectExpLevel extends TradeObject{
                 return true;
             case SELL:
                 if (ExpAPI.getTotalExperience(player) <= getExp()) {
-                    player.sendMessage(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.MESSAGE_NOT_ENOUGH_EXP",
-                            String.valueOf(getExp()),
-                            RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_EXP_TYPE_EXP"),
-                            String.valueOf(ExpAPI.getTotalExperience(player)),
-                            RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_EXP_TYPE_EXP")
+                    player.sendMessage(RPGI18N.MESSAGE_NOT_ENOUGH_EXP.get(
+                            getExp(),
+                            RPGI18N.INFO_EXP_TYPE_EXP.get(),
+                            ExpAPI.getTotalExperience(player),
+                            RPGI18N.INFO_EXP_TYPE_EXP.get()
                     ));
                     return false;
                 }
@@ -87,26 +87,20 @@ public class TradeObjectExpLevel extends TradeObject{
     }
 
     @Override
-    public List<String> getFooters(TradeType type, Trade trade, Player viewer) {
+    public List<String> getFooters(TradeType type, Trade trade, Player viewer, boolean forceNorm) {
         List<String> result = new ArrayList<>();
-        String levelPlural = RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_EXP_TYPE_EXP");
+        String levelPlural = RPGI18N.INFO_EXP_TYPE_EXP.get();
         int exp = getExp();
 
         String messages;
         if (ExpAPI.getTotalExperience(viewer) <= exp) {
-            messages = RPGShop.getInstance().configManager.getI18NMsg("SHOP.FOOTER.TRADEOBJ_PASS",
-                    levelPlural,
-                    String.valueOf(exp));
+            messages = RPGI18N.FOOTER_TRADEOBJ_PASS.get(levelPlural, exp);
         } else {
-            messages = RPGShop.getInstance().configManager.getI18NMsg("SHOP.FOOTER.TRADEOBJ_DENY",
-                    levelPlural,
-                    String.valueOf(exp));
+            messages = RPGI18N.FOOTER_TRADEOBJ_DENY.get(levelPlural, exp);
         }
 
-        if (checkIsDisplayMode(trade.canBuy(), trade.canSell(), type)) {
-            messages = RPGShop.getInstance().configManager.getI18NMsg("SHOP.FOOTER.TRADEOBJ_NORM",
-                    levelPlural,
-                    String.valueOf(exp));
+        if (checkIsDisplayMode(trade.canBuy(), trade.canSell(), type) || forceNorm) {
+            messages = RPGI18N.FOOTER_TRADEOBJ_NORM.get(levelPlural, exp);
         }
         result.add(messages);
         return result;
@@ -132,7 +126,7 @@ public class TradeObjectExpLevel extends TradeObject{
         return tradeObj;
     }
     public void edit(Player player) {
-        player.sendMessage(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.MESSAGE_INPUT_CHAT",
+        player.sendMessage(RPGI18N.MESSAGE_INPUT_CHAT.get(
                 "1",
                 "Int"
         ));

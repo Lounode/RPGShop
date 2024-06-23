@@ -1,8 +1,8 @@
 package github.lounode.rpgshop.shop.tradeobjects;
 
-import github.lounode.rpgshop.RPGShop;
 import github.lounode.rpgshop.chat.ChatHandle;
 import github.lounode.rpgshop.gui.guis.EditorTrade;
+import github.lounode.rpgshop.i18n.RPGI18N;
 import github.lounode.rpgshop.shop.Trade;
 import github.lounode.rpgshop.shop.TradeType;
 import github.lounode.rpgshop.utils.VaultAPI;
@@ -71,10 +71,10 @@ public class TradeObjectMoney extends TradeObject{
                 return true;
             case SELL:
                 if (!VaultAPI.has(player, getMoney())) {
-                    player.sendMessage(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.MESSAGE_NOT_ENOUGH_MONEY",
-                            String.valueOf(getMoney()),
+                    player.sendMessage(RPGI18N.MESSAGE_NOT_ENOUGH_MONEY.get(
+                            getMoney(),
                             currencyNamePlural,
-                            String.valueOf(VaultAPI.get(player)),
+                            VaultAPI.get(player),
                             currencyNamePlural
                     ));
                     return false;
@@ -86,26 +86,20 @@ public class TradeObjectMoney extends TradeObject{
     }
 
     @Override
-    public List<String> getFooters(TradeType type, Trade trade, Player viewer) {
+    public List<String> getFooters(TradeType type, Trade trade, Player viewer, boolean forceNorm) {
         List<String> result = new ArrayList<>();
         String currencyNamePlural = VaultAPI.getCurrencyNamePlural();
         double money = getMoney();
 
         String messages;
         if (VaultAPI.has(viewer, money)) {
-            messages = RPGShop.getInstance().configManager.getI18NMsg("SHOP.FOOTER.TRADEOBJ_PASS",
-                    currencyNamePlural,
-                    String.valueOf(money));
+            messages = RPGI18N.FOOTER_TRADEOBJ_PASS.get(currencyNamePlural, money);
         } else {
-            messages = RPGShop.getInstance().configManager.getI18NMsg("SHOP.FOOTER.TRADEOBJ_DENY",
-                    currencyNamePlural,
-                    String.valueOf(money));
+            messages = RPGI18N.FOOTER_TRADEOBJ_DENY.get(currencyNamePlural, money);
         }
 
-        if (checkIsDisplayMode(trade.canBuy(), trade.canSell(), type)) {
-            messages = RPGShop.getInstance().configManager.getI18NMsg("SHOP.FOOTER.TRADEOBJ_NORM",
-                    currencyNamePlural,
-                    String.valueOf(money));
+        if (checkIsDisplayMode(trade.canBuy(), trade.canSell(), type) || forceNorm) {
+            messages = RPGI18N.FOOTER_TRADEOBJ_NORM.get(currencyNamePlural, money);
         }
 
         result.add(messages);
@@ -133,10 +127,10 @@ public class TradeObjectMoney extends TradeObject{
     }
 
     public void edit(Player player) {
-        player.sendMessage(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.MESSAGE_INPUT_CHAT",
+        player.sendMessage(RPGI18N.MESSAGE_INPUT_CHAT.get(
                 "1",
                 "Double"
-                ));
+        ));
         ChatHandle handle = new ChatHandle();
         handle.addCallback(this::chatHandleCallback);
         handle.startListener(player);

@@ -1,6 +1,7 @@
 package github.lounode.rpgshop.gui;
 
 import github.lounode.rpgshop.gui.events.GUIOpenEvent;
+import github.lounode.rpgshop.i18n.RPGI18N;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -55,14 +56,14 @@ public class MultiPageInventory extends GUI {
         //Prev
         ItemStack prevSkin = new ItemStack(Material.ARROW);
         ItemMeta prevButtonMeta = prevSkin.getItemMeta();
-        prevButtonMeta.setDisplayName(getManager().plugin.configManager.getI18NMsg("SHOP.BUTTON_PREV"));
+        prevButtonMeta.setDisplayName(RPGI18N.BUTTON_PREV.get());
         prevSkin.setItemMeta(prevButtonMeta);
 
         prevBtnSkin = prevSkin;
         //Next
         ItemStack nextButton = new ItemStack(Material.ARROW);
         ItemMeta nextButtonMeta = nextButton.getItemMeta();
-        nextButtonMeta.setDisplayName(getManager().plugin.configManager.getI18NMsg("SHOP.BUTTON_NEXT"));
+        nextButtonMeta.setDisplayName(RPGI18N.BUTTON_NEXT.get());
         nextButton.setItemMeta(nextButtonMeta);
 
         nextBtnSkin = nextButton;

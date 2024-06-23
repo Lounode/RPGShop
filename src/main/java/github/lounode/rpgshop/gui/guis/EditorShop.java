@@ -4,6 +4,7 @@ import github.lounode.rpgshop.RPGShop;
 import github.lounode.rpgshop.gui.Button;
 import github.lounode.rpgshop.gui.ButtonClickEvent;
 import github.lounode.rpgshop.gui.MultiPageInventory;
+import github.lounode.rpgshop.i18n.RPGI18N;
 import github.lounode.rpgshop.shop.Shop;
 import github.lounode.rpgshop.shop.Trade;
 import org.bukkit.Material;
@@ -24,14 +25,14 @@ public class EditorShop {
         this.shop = shop;
     }
     public void open(Player player) {
-        String title = RPGShop.getInstance().configManager.getI18NMsg("SHOP.EDIT_PREFIX", shop.getTitle());
+        String title = RPGI18N.EDIT_PREFIX.get(shop.getTitle());
         MultiPageInventory editorOverview = new MultiPageInventory(RPGShop.getInstance().guiManager, shop.getSize(), title, true);
 
         //Init
 
         ItemStack createSkin = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
         ItemMeta createMeta = createSkin.getItemMeta();
-        createMeta.setDisplayName(RPGShop.getInstance().configManager.getI18NMsg("SHOP.BUTTON_CREATE"));
+        createMeta.setDisplayName(RPGI18N.BUTTON_CREATE.get());
         createSkin.setItemMeta(createMeta);
 
         Button create = new Button(createSkin);
@@ -57,7 +58,7 @@ public class EditorShop {
         //Exit
         ItemStack exitButtonSkin = new ItemStack(Material.BARRIER);
         ItemMeta exitButtonMeta = exitButtonSkin.getItemMeta();
-        exitButtonMeta.setDisplayName(RPGShop.getInstance().configManager.getI18NMsg("SHOP.BUTTON_EXIT"));
+        exitButtonMeta.setDisplayName(RPGI18N.BUTTON_EXIT.get());
         exitButtonSkin.setItemMeta(exitButtonMeta);
         Button exitButton = new Button(exitButtonSkin);
         exitButton.addClickListener(this::btnEventReturn);
@@ -67,7 +68,7 @@ public class EditorShop {
         //Open
         ItemStack openButton = new ItemStack(Material.EYE_OF_ENDER);
         ItemMeta openButtonMeta = openButton.getItemMeta();
-        openButtonMeta.setDisplayName(RPGShop.getInstance().configManager.getI18NMsg("SHOP.BUTTON_OPEN"));
+        openButtonMeta.setDisplayName(RPGI18N.BUTTON_OPEN.get());
         openButton.setItemMeta(openButtonMeta);
 
         Button open = new Button(openButton);

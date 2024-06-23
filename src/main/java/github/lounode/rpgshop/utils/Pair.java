@@ -3,7 +3,11 @@ package github.lounode.rpgshop.utils;
 import java.io.Serializable;
 
 /**
- * <p>A convenience class to represent name-value pairs.</p>
+ * comments:<br>
+ * Javafx的Pair的复制
+ *
+ * @author Javafx
+ * @date 2024/06/17
  */
 public class Pair<K,V> implements Serializable{
 

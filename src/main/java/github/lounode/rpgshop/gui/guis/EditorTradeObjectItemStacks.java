@@ -5,6 +5,8 @@ import github.lounode.rpgshop.gui.Button;
 import github.lounode.rpgshop.gui.ButtonClickEvent;
 import github.lounode.rpgshop.gui.MultiPageInventory;
 import github.lounode.rpgshop.gui.events.GUICloseEvent;
+import github.lounode.rpgshop.i18n.RPGI18N;
+import github.lounode.rpgshop.shop.TradeType;
 import github.lounode.rpgshop.shop.tradeobjects.TradeObjectItemStacks;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -21,13 +23,17 @@ public class EditorTradeObjectItemStacks {
         this.tradeObj = tradeObj;
     }
     public void open (Player player) {
-        MultiPageInventory inv = new MultiPageInventory(RPGShop.getInstance().guiManager, 45,
-                RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.TITLE_EDIT_ITEMS"), true);
+        MultiPageInventory inv = new MultiPageInventory(
+                RPGShop.getInstance().guiManager,
+                45,
+                RPGI18N.GUI_TITLE_EDIT_ITEMS.get(),
+                true
+        );
         inv.setDenyAnyClick(false);
         // 创建返回按钮
         ItemStack backButton = new ItemStack(Material.BARRIER);
         ItemMeta backMeta = backButton.getItemMeta();
-        backMeta.setDisplayName(RPGShop.getInstance().configManager.getI18NMsg("SHOP.BUTTON_BACK"));
+        backMeta.setDisplayName(RPGI18N.TRADE_BUTTON_BACK.get());
         backButton.setItemMeta(backMeta);
 
         Button back = new Button(backButton);
@@ -46,7 +52,16 @@ public class EditorTradeObjectItemStacks {
     }
     private boolean btnEventBackToTradeEditor(ButtonClickEvent event) {
         saveItems(event.getInventory());
-        EditorTrade editor = new EditorTrade(tradeObj.getTrade());
+        TradeObjectItemStacks require = tradeObj.getTrade().getRequire(TradeObjectItemStacks.class);
+        EditorTrade editor;
+        if (require == tradeObj) {
+            editor = new EditorTrade(tradeObj.getTrade(), TradeType.BUY);
+        } else {
+            editor = new EditorTrade(tradeObj.getTrade(), TradeType.SELL);
+        }
+
+
+
         editor.open(event.getPlayer());
         return true;
     }

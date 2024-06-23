@@ -4,6 +4,7 @@ import github.lounode.rpgshop.RPGShop;
 import github.lounode.rpgshop.gui.Button;
 import github.lounode.rpgshop.gui.ButtonClickEvent;
 import github.lounode.rpgshop.gui.MultiPageInventory;
+import github.lounode.rpgshop.i18n.RPGI18N;
 import github.lounode.rpgshop.shop.Shop;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,8 +20,11 @@ public class EditorMain {
     public void open(Player player) {
         List<Shop> shops = RPGShop.getInstance().shopManager.getShops();
         //GUIHolder holder = new GUIHolder(RPGShop.getInstance().guiManager);
-        MultiPageInventory inv = new MultiPageInventory(RPGShop.getInstance().guiManager, shops.size(),
-                RPGShop.getInstance().configManager.getI18NMsg("SHOP.EDITOR_TITLE"), true);
+        MultiPageInventory inv = new MultiPageInventory(
+                RPGShop.getInstance().guiManager, shops.size(),
+                RPGI18N.EDITOR_TITLE.get(),
+                true
+        );
 
         for(int i = 0; i < shops.size(); i++) {
             Shop shop = shops.get(i);
@@ -29,11 +33,15 @@ public class EditorMain {
             ItemMeta shopDefaultDisplayMeta = shopDefaultDisplay.getItemMeta();
             shopDefaultDisplayMeta.setDisplayName("§r"+shop.getTitle());
             List<String> lore = new ArrayList<>(Arrays.asList(
-                    RPGShop.getInstance().configManager.getI18NMsg("SHOP.EDITOR_DISPLAY_ID", shop.getID()),
-                    RPGShop.getInstance().configManager.getI18NMsg("SHOP.EDITOR_DISPLAY_TIME", "null"),
-                    RPGShop.getInstance().configManager.getI18NMsg("SHOP.EDITOR_DISPLAY_ROWS", String.valueOf(shop.getRows())),
-                    RPGShop.getInstance().configManager.getI18NMsg("SHOP.EDITOR_DISPLAY_AUTHOR", "null")
+                    RPGI18N.EDITOR_DISPLAY_ID.get(shop.getID()),
+                    RPGI18N.EDITOR_DISPLAY_TIME.get(shop.getCreateTime()),
+                    RPGI18N.EDITOR_DISPLAY_ROWS.get(shop.getRows()),
+                    RPGI18N.EDITOR_DISPLAY_AUTHOR.get(shop.getOwner())
             ));
+            if (shop.getLastEditTime() != null){
+                lore.add("§r");
+                lore.add(RPGI18N.EDITOR_DISPLAY_LAST_EDIT.get(shop.getLastEditor(), shop.getLastEditTime()));
+            }
             shopDefaultDisplayMeta.setLore(lore);
             shopDefaultDisplay.setItemMeta(shopDefaultDisplayMeta);
 

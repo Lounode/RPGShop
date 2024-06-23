@@ -1,7 +1,7 @@
 package github.lounode.rpgshop.shop.tradeobjects;
 
-import github.lounode.rpgshop.RPGShop;
 import github.lounode.rpgshop.gui.guis.EditorTradeObjectItemStacks;
+import github.lounode.rpgshop.i18n.RPGI18N;
 import github.lounode.rpgshop.shop.Trade;
 import github.lounode.rpgshop.shop.TradeType;
 import github.lounode.rpgshop.utils.ItemPair;
@@ -50,7 +50,7 @@ public class TradeObjectItemStacks extends TradeObject {
     }
 
     @Override
-    public List<String> getFooters(TradeType type, Trade trade, Player viewer) {
+    public List<String> getFooters(TradeType type, Trade trade, Player viewer , boolean forceNorm) {
         List<String> result = new ArrayList<>();
 
         List<Inventory> inventories = new ArrayList<>();
@@ -65,19 +65,13 @@ public class TradeObjectItemStacks extends TradeObject {
 
             String messages;
             if (playerContents.getCount(item) >= count) {
-                messages = RPGShop.getInstance().configManager.getI18NMsg("SHOP.FOOTER.TRADEOBJ_PASS",
-                        itemDisplayName,
-                        String.valueOf(getCounter().getCount(item)));
+                messages = RPGI18N.FOOTER_TRADEOBJ_PASS.get(itemDisplayName, getCounter().getCount(item));
             } else {
-                messages = RPGShop.getInstance().configManager.getI18NMsg("SHOP.FOOTER.TRADEOBJ_DENY",
-                        itemDisplayName,
-                        String.valueOf(getCounter().getCount(item)));
+                messages = RPGI18N.FOOTER_TRADEOBJ_DENY.get(itemDisplayName, getCounter().getCount(item));
             }
 
-            if (checkIsDisplayMode(trade.canBuy(), trade.canSell(), type)) {
-                messages = RPGShop.getInstance().configManager.getI18NMsg("SHOP.FOOTER.TRADEOBJ_NORM",
-                        itemDisplayName,
-                        String.valueOf(getCounter().getCount(item)));
+            if (checkIsDisplayMode(trade.canBuy(), trade.canSell(), type) || forceNorm) {
+                messages = RPGI18N.FOOTER_TRADEOBJ_NORM.get(itemDisplayName, getCounter().getCount(item));
             }
             result.add(messages);
         }
@@ -92,8 +86,7 @@ public class TradeObjectItemStacks extends TradeObject {
         switch (type){
             case BUY:
                 if (!hasAvailableSlot(player, requireSlots)) {
-                    player.sendMessage(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.MESSAGE_NEED_EMPTY_SLOTS",
-                            String.valueOf(requireSlots)));
+                    player.sendMessage(RPGI18N.MESSAGE_NEED_EMPTY_SLOTS.get(requireSlots));
                     return false;
                 }
                 return true;
@@ -105,10 +98,10 @@ public class TradeObjectItemStacks extends TradeObject {
                     ItemStack itemStack = result.getValue();
                     String itemDisplayName = ItemUtil.getDisplayName(itemStack);
 
-                    player.sendMessage(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.MESSAGE_NOT_ENOUGH_CONTENTS",
-                            String.valueOf(getCounter().getCount(itemStack)),
+                    player.sendMessage(RPGI18N.MESSAGE_NOT_ENOUGH_CONTENTS.get(
+                            getCounter().getCount(itemStack),
                             itemDisplayName,
-                            String.valueOf(counterPlayer.getCount(itemStack))
+                            counterPlayer.getCount(itemStack)
                     ));
                     return false;
                 }

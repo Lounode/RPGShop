@@ -4,12 +4,11 @@ import github.lounode.rpgshop.RPGShop;
 import github.lounode.rpgshop.gui.Button;
 import github.lounode.rpgshop.gui.ButtonClickEvent;
 import github.lounode.rpgshop.gui.MultiPageInventory;
+import github.lounode.rpgshop.i18n.RPGI18N;
 import github.lounode.rpgshop.shop.Shop;
 import github.lounode.rpgshop.shop.Trade;
-import github.lounode.rpgshop.shop.tradeobjects.TradeObjectExpLevel;
-import github.lounode.rpgshop.shop.tradeobjects.TradeObjectItemStacks;
-import github.lounode.rpgshop.shop.tradeobjects.TradeObjectMoney;
-import github.lounode.rpgshop.shop.tradeobjects.TradeObjectPlayerPoints;
+import github.lounode.rpgshop.shop.TradeType;
+import github.lounode.rpgshop.shop.tradeobjects.*;
 import github.lounode.rpgshop.utils.VaultAPI;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -18,18 +17,26 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EditorTrade {
     private Trade trade;
+    private TradeType editType;
     public EditorTrade (Trade trade) {
         this.trade = trade;
+        this.editType = TradeType.BUY;
+    }
+    public EditorTrade (Trade trade, TradeType editType) {
+        this.trade = trade;
+        this.editType = editType;
     }
     public void open(Player editor) {
         MultiPageInventory editTradeGUI = new MultiPageInventory(RPGShop.getInstance().guiManager, 54,
-                RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.TITLE_NEW",
-                        String.valueOf(trade.getSaleSlot()), trade.getShop().getTitle()), false);
+                RPGI18N.TRADE_TITLE_NEW.get(trade.getShop().getTitle()),
+                false);
         //Init
         ItemStack fill = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);//GRAY
         ItemMeta glassMeta = fill.getItemMeta();
@@ -45,7 +52,7 @@ public class EditorTrade {
         //Save
         ItemStack skinSave = new ItemStack(Material.SLIME_BALL);
         ItemMeta saveMeta = skinSave.getItemMeta();
-        saveMeta.setDisplayName(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.BUTTON_SAVE"));
+        saveMeta.setDisplayName(RPGI18N.TRADE_BUTTON_SAVE.get());
         skinSave.setItemMeta(saveMeta);
 
         Button save = new Button(skinSave);
@@ -54,7 +61,7 @@ public class EditorTrade {
         //Cancel
         ItemStack skinCancel = new ItemStack(Material.BARRIER);
         ItemMeta cancelMeta = skinCancel.getItemMeta();
-        cancelMeta.setDisplayName(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.BUTTON_CANCEL"));
+        cancelMeta.setDisplayName(RPGI18N.TRADE_BUTTON_CANCEL.get());
         skinCancel.setItemMeta(cancelMeta);
 
         Button cancel = new Button(skinCancel);
@@ -63,140 +70,176 @@ public class EditorTrade {
         //Info
         ItemStack skinInfo = new ItemStack(Material.SIGN);
         ItemMeta infoMeta = skinInfo.getItemMeta();
-        infoMeta.setDisplayName(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.BUTTON_INFO"));
+        infoMeta.setDisplayName(RPGI18N.TRADE_BUTTON_INFO.get());
+        infoMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        List<String> infoLore = new ArrayList<>();
+        infoLore.add("§r");
+        if (this.editType == TradeType.BUY) {
+            for(TradeObject tradeObject : trade.getRequires()) {
+                infoLore.addAll(tradeObject.getFooters(TradeType.BUY, trade, editor, true));
+            }
+        } else {
+            for(TradeObject tradeObject : trade.getRewards()) {
+                infoLore.addAll(tradeObject.getFooters(TradeType.SELL, trade, editor, true));
+            }
+        }
+
+        infoMeta.setLore(infoLore);
         skinInfo.setItemMeta(infoMeta);
 
         Button info = new Button(skinInfo);
         editTradeGUI.setButton(13, info);
-        //Need
-        ItemStack skinNeed = new ItemStack(Material.CHEST);
-        ItemMeta needMeta = skinNeed.getItemMeta();
-        needMeta.setDisplayName(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.BUTTON_NEED"));
+        //Item
+        ItemStack itemStacks = new ItemStack(Material.CHEST);
+        ItemMeta itemStacksMeta = itemStacks.getItemMeta();
+        itemStacksMeta.setDisplayName(RPGI18N.TRADE_BUTTON_NEED.get());
+        if (this.editType == TradeType.SELL) {
+            itemStacksMeta.setDisplayName(RPGI18N.TRADE_BUTTON_REWARD.get());
+        }
 
-        needMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        TradeObjectItemStacks itemRequire = trade.getRequire(TradeObjectItemStacks.class);
+        itemStacksMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         List<String> itemStackLore = new ArrayList<>();
         itemStackLore.add("§r");
-        if (itemRequire == null) {
-            itemStackLore.add(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_ITEM_REQUIRE_UNSET"));
+        if (this.editType == TradeType.BUY) {
+            TradeObjectItemStacks itemRequire = trade.getRequire(TradeObjectItemStacks.class);
+            if (itemRequire == null) {
+                itemStackLore.add(RPGI18N.INFO_ITEM_REQUIRE_UNSET.get());
+            } else {
+                itemStacksMeta.addEnchant(Enchantment.ARROW_INFINITE , 1 , false);
+                itemStackLore.add(RPGI18N.INFO_ITEM_REQUIRE.get());
+
+                itemStackLore.addAll(itemRequire.getFooters(TradeType.BUY, trade, editor, true));
+            }
         } else {
-            needMeta.addEnchant(Enchantment.ARROW_INFINITE , 1 , false);
-            itemStackLore.add(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_ITEM_REQUIRE"));
+            TradeObjectItemStacks itemReward = trade.getReward(TradeObjectItemStacks.class);
+            if (itemReward == null) {
+                itemStackLore.add(RPGI18N.INFO_ITEM_REWARD_UNSET.get());
+            } else {
+                itemStacksMeta.addEnchant(Enchantment.ARROW_INFINITE , 1 , false);
+                itemStackLore.add(RPGI18N.INFO_ITEM_REWARD.get());
 
+                itemStackLore.addAll(itemReward.getFooters(TradeType.SELL, trade, editor, true));
+            }
         }
-        needMeta.setLore(itemStackLore);
 
-        skinNeed.setItemMeta(needMeta);
 
-        Button need = new Button(skinNeed);
+        itemStacksMeta.setLore(itemStackLore);
+
+        itemStacks.setItemMeta(itemStacksMeta);
+
+        Button need = new Button(itemStacks);
         need.addClickListener(this::btnEventEditNeedItems);
-        editTradeGUI.setButton(10, need);
-        //Reward
-        ItemStack skinReward = new ItemStack(Material.WORKBENCH);
-        ItemMeta rewardMeta = skinReward.getItemMeta();
-        rewardMeta.setDisplayName(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.BUTTON_REWARD"));
-
-        rewardMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        TradeObjectItemStacks itemReward = trade.getRequire(TradeObjectItemStacks.class);
-        List<String> itemLore = new ArrayList<>();
-        itemLore.add("§r");
-        if (itemReward == null) {
-            itemLore.add(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_ITEM_REWARD_UNSET"));
-        } else {
-            rewardMeta.addEnchant(Enchantment.ARROW_INFINITE , 1 , false);
-            itemLore.add(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_ITEM_REWARD"));
-
-        }
-        rewardMeta.setLore(itemLore);
-
-        skinReward.setItemMeta(rewardMeta);
-
-        Button reward = new Button(skinReward);
-        reward.addClickListener(this::btnEventEditRewardItems);
-        editTradeGUI.setButton(16, reward);
-
-        // Need-Coin
+        editTradeGUI.setButton(22, need);
+        // Coin
         if (RPGShop.getInstance().isVault()) {
             ItemStack coinItem = new ItemStack(Material.GOLD_NUGGET);
             ItemMeta coinMeta = coinItem.getItemMeta();
             coinMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            coinMeta.setDisplayName(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.BUTTON_NEED_COIN"));
+            coinMeta.setDisplayName(RPGI18N.TRADE_BUTTON_NEED_COIN.get());
 
-            TradeObjectMoney moneyRequire = trade.getRequire(TradeObjectMoney.class);
             List<String> moneyLore = new ArrayList<>();
             moneyLore.add("§r");
-            if (moneyRequire == null) {
-                moneyLore.add(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_MONEY_UNSET"));
+
+            if (this.editType == TradeType.BUY) {
+                TradeObjectMoney moneyRequire = trade.getRequire(TradeObjectMoney.class);
+                if (moneyRequire == null) {
+                    moneyLore.add(RPGI18N.INFO_MONEY_UNSET.get());
+                } else {
+                    coinMeta.addEnchant(Enchantment.ARROW_INFINITE , 1 , false);
+                    moneyLore.add(RPGI18N.INFO_MONEY.get(moneyRequire.getMoney(), VaultAPI.getCurrencyNamePlural()));
+                }
             } else {
-                coinMeta.addEnchant(Enchantment.ARROW_INFINITE , 1 , false);
-                moneyLore.add(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_MONEY",
-                        String.valueOf(moneyRequire.getMoney()),
-                        VaultAPI.getCurrencyNamePlural()
-                ));
+                TradeObjectMoney moneyReward = trade.getReward(TradeObjectMoney.class);
+                if (moneyReward == null) {
+                    moneyLore.add(RPGI18N.INFO_MONEY_UNSET.get());
+                } else {
+                    coinMeta.addEnchant(Enchantment.ARROW_INFINITE , 1 , false);
+                    moneyLore.add(RPGI18N.INFO_MONEY.get(moneyReward.getMoney(), VaultAPI.getCurrencyNamePlural()));
+                }
             }
+
 
             coinMeta.setLore(moneyLore);
             coinItem.setItemMeta(coinMeta);
 
             Button needCoinButton = new Button(coinItem);
             needCoinButton.addClickListener(this::btnEventEditMoney);
-            editTradeGUI.setButton(29, needCoinButton);
+            editTradeGUI.setButton(20, needCoinButton);
         }
 
-        // Need-Points
+        // Points
         if (RPGShop.getInstance().isPlayerPoints()) {
             ItemStack pointsItem = new ItemStack(Material.DIAMOND);
             ItemMeta pointsMeta = pointsItem.getItemMeta();
-            pointsMeta.setDisplayName(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.BUTTON_NEED_POINTS"));
+            pointsMeta.setDisplayName(RPGI18N.TRADE_BUTTON_NEED_POINTS.get());
+            pointsMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
-            TradeObjectPlayerPoints pointsRequire = trade.getRequire(TradeObjectPlayerPoints.class);
             List<String> pointsLore = new ArrayList<>();
             pointsLore.add("§r");
-            if (pointsRequire == null) {
-                pointsLore.add(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_POINTS_UNSET"));
+
+            if (this.editType == TradeType.BUY) {
+                TradeObjectPlayerPoints pointsRequire = trade.getRequire(TradeObjectPlayerPoints.class);
+                if (pointsRequire == null) {
+                    pointsLore.add(RPGI18N.INFO_POINTS_UNSET.get());
+                } else {
+                    pointsMeta.addEnchant(Enchantment.ARROW_INFINITE , 1 , false);
+                    pointsLore.add(RPGI18N.INFO_POINTS.get(pointsRequire.getPoints(), VaultAPI.getCurrencyNamePlural()));
+                }
             } else {
-                pointsMeta.addEnchant(Enchantment.ARROW_INFINITE , 1 , false);
-                pointsLore.add(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_POINTS",
-                        String.valueOf(pointsRequire.getPoints()),
-                        VaultAPI.getCurrencyNamePlural()
-                ));
+                TradeObjectPlayerPoints pointsReward = trade.getReward(TradeObjectPlayerPoints.class);
+                if (pointsReward == null) {
+                    pointsLore.add(RPGI18N.INFO_POINTS_UNSET.get());
+                } else {
+                    pointsMeta.addEnchant(Enchantment.ARROW_INFINITE , 1 , false);
+                    pointsLore.add(RPGI18N.INFO_POINTS.get(pointsReward.getPoints(), VaultAPI.getCurrencyNamePlural()));
+                }
             }
+
             pointsMeta.setLore(pointsLore);
 
             pointsItem.setItemMeta(pointsMeta);
 
             Button needPointsButton = new Button(pointsItem);
             needPointsButton.addClickListener(this::btnEventEditPoints);
-            editTradeGUI.setButton(33, needPointsButton);
+            editTradeGUI.setButton(24, needPointsButton);
         }
-
-
-        // Need-Exp
+        // Exp
         ItemStack expItem = new ItemStack(Material.EXP_BOTTLE);
         ItemMeta expMeta = expItem.getItemMeta();
-        expMeta.setDisplayName(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.BUTTON_NEED_EXP"));
+        expMeta.setDisplayName(RPGI18N.TRADE_BUTTON_NEED_EXP.get());
 
-        TradeObjectExpLevel expRequire = trade.getRequire(TradeObjectExpLevel.class);
+
         List<String> expLore = new ArrayList<>();
         expLore.add("§r");
-        if (expRequire == null) {
-            expLore.add(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_EXP_UNSET"));
+
+        if (this.editType == TradeType.BUY) {
+            TradeObjectExpLevel expRequire = trade.getRequire(TradeObjectExpLevel.class);
+            if (expRequire == null) {
+                expLore.add(RPGI18N.INFO_EXP_UNSET.get());
+            } else {
+                expMeta.addEnchant(Enchantment.ARROW_INFINITE , 1 , false);
+                expLore.add(RPGI18N.INFO_EXP.get(expRequire.getExp(), RPGI18N.INFO_EXP_TYPE_EXP.get()));
+            }
         } else {
-            expMeta.addEnchant(Enchantment.ARROW_INFINITE , 1 , false);
-            expLore.add(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_EXP",
-                    String.valueOf(expRequire.getExp()),
-                    RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_EXP_TYPE_EXP")
-            ));
+            TradeObjectExpLevel expReward = trade.getReward(TradeObjectExpLevel.class);
+            if (expReward == null) {
+                expLore.add(RPGI18N.INFO_EXP_UNSET.get());
+            } else {
+                expMeta.addEnchant(Enchantment.ARROW_INFINITE , 1 , false);
+                expLore.add(RPGI18N.INFO_EXP.get(expReward.getExp(), RPGI18N.INFO_EXP_TYPE_EXP.get()));
+            }
         }
+
         expMeta.setLore(expLore);
 
         expItem.setItemMeta(expMeta);
 
         Button needExpButton = new Button(expItem);
         needExpButton.addClickListener(this::btnEventEditExp);
-        editTradeGUI.setButton(31, needExpButton);
+        editTradeGUI.setButton(30, needExpButton);
 
         // IsBuy
+        /*
         ItemStack buyItem = new ItemStack(Material.EMERALD);
         ItemMeta buyMeta = buyItem.getItemMeta();
         buyMeta.setDisplayName(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.BUTTON_IS_BUY"));
@@ -251,7 +294,7 @@ public class EditorTrade {
         Button isSellButton = new Button(sellItem);
         isSellButton.addClickListener(this::btnEventSwitchCanSell);
         editTradeGUI.setButton(39, isSellButton);
-
+        */
         // IsInfinityTrade
         ItemStack infinityItem = new ItemStack(Material.ENCHANTED_BOOK);
         if (!trade.canInfinity()) {
@@ -259,7 +302,7 @@ public class EditorTrade {
         }
         ItemMeta infinityMeta = infinityItem.getItemMeta();
         //infinityMeta.addEnchant(Enchantment.ARROW_INFINITE , 1 , false);
-        infinityMeta.setDisplayName(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.BUTTON_IS_INFINITY_TRADE"));
+        infinityMeta.setDisplayName(RPGI18N.TRADE_BUTTON_IS_INFINITY_TRADE.get());
         infinityMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         if (trade.canInfinity()) {
             infinityMeta.addEnchant(Enchantment.ARROW_INFINITE , 1 , false);
@@ -268,13 +311,9 @@ public class EditorTrade {
         List<String> infinityLore = new ArrayList<>();
         infinityLore.add("§r");
         if (trade.canInfinity()) {
-            infinityLore.add(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_CAN_INFINITY") +
-                    RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_STATUS_ENABLED")
-            );
+            infinityLore.add(RPGI18N.INFO_CAN_INFINITY.get(RPGI18N.INFO_STATUS_ENABLED.get()));
         } else {
-            infinityLore.add(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_CAN_INFINITY") +
-                    RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.INFO_STATUS_DISABLED")
-            );
+            infinityLore.add(RPGI18N.INFO_CAN_INFINITY.get(RPGI18N.INFO_STATUS_DISABLED.get()));
         }
         infinityMeta.setLore(infinityLore);
 
@@ -282,49 +321,103 @@ public class EditorTrade {
 
         Button isInfinityButton = new Button(infinityItem);
         isInfinityButton.addClickListener(this::btnEventSwitchCanInfinity);
-        editTradeGUI.setButton(41, isInfinityButton);
+        editTradeGUI.setButton(40, isInfinityButton);
         //API
         ItemStack apiItem = new ItemStack(Material.PISTON_BASE);
         ItemMeta apiMeta = apiItem.getItemMeta();
-        apiMeta.setDisplayName(RPGShop.getInstance().configManager.getI18NMsg("SHOP.TRADE.BUTTON_API"));
+        apiMeta.setDisplayName(RPGI18N.TRADE_BUTTON_API.get());
         apiItem.setItemMeta(apiMeta);
 
         Button apiButton = new Button(apiItem);
-        editTradeGUI.setButton(43, apiButton);
+        editTradeGUI.setButton(32, apiButton);
+        //Switch
+        ItemStack switchItem = new ItemStack(Material.EMERALD_BLOCK);
+        if (this.editType == TradeType.SELL) {
+            switchItem = new ItemStack(Material.REDSTONE_BLOCK);
+        }
+        ItemMeta switchMeta = switchItem.getItemMeta();
+        switchMeta.setDisplayName(RPGI18N.BUTTON_SWITCH_BUY.get());
+        if (this.editType == TradeType.SELL) {
+            switchMeta.setDisplayName(RPGI18N.BUTTON_SWITCH_SELL.get());
+        }
+        switchItem.setItemMeta(switchMeta);
+
+        Button switchButton = new Button(switchItem);
+        switchButton.addClickListener(this::btnEventSwitch);
+        editTradeGUI.setButton(49, switchButton);
+
+
 
 
 
 
         editTradeGUI.open(editor);
     }
+    private boolean btnEventSwitch(ButtonClickEvent event) {
+        TradeType toType = this.editType == TradeType.BUY ? TradeType.SELL : TradeType.BUY;
+        this.editType = toType;
+        open(event.getPlayer());
+        return true;
+    }
 
     private boolean btnEventEditExp(ButtonClickEvent event) {
-        TradeObjectExpLevel require = trade.getRequire(TradeObjectExpLevel.class);
-        if (require == null) {
-            require = new TradeObjectExpLevel(0);
-            trade.addRequire(require);
+        if (this.editType == TradeType.BUY) {
+            TradeObjectExpLevel require = trade.getRequire(TradeObjectExpLevel.class);
+            if (require == null) {
+                require = new TradeObjectExpLevel(0);
+                trade.addRequire(require);
+            }
+            require.edit(event.getPlayer());
+        } else {
+            TradeObjectExpLevel reward = trade.getReward(TradeObjectExpLevel.class);
+            if (reward == null) {
+                reward = new TradeObjectExpLevel(0);
+                trade.addReward(reward);
+            }
+            reward.edit(event.getPlayer());
         }
-        require.edit(event.getPlayer());
+
         return true;
     }
 
     private boolean btnEventEditPoints(ButtonClickEvent event) {
-        TradeObjectPlayerPoints require = trade.getRequire(TradeObjectPlayerPoints.class);
-        if (require == null) {
-            require = new TradeObjectPlayerPoints(0);
-            trade.addRequire(require);
+        if (this.editType == TradeType.BUY) {
+            TradeObjectPlayerPoints require = trade.getRequire(TradeObjectPlayerPoints.class);
+            if (require == null) {
+                require = new TradeObjectPlayerPoints(0);
+                trade.addRequire(require);
+            }
+            require.edit(event.getPlayer());
+        } else {
+            TradeObjectPlayerPoints reward = trade.getReward(TradeObjectPlayerPoints.class);
+            if (reward == null) {
+                reward = new TradeObjectPlayerPoints(0);
+                trade.addReward(reward);
+            }
+            reward.edit(event.getPlayer());
         }
-        require.edit(event.getPlayer());
+
+
         return true;
     }
 
     private boolean btnEventEditMoney(ButtonClickEvent event) {
-        TradeObjectMoney require = trade.getRequire(TradeObjectMoney.class);
-        if (require == null) {
-            require = new TradeObjectMoney(0);
-            trade.addRequire(require);
+        if (this.editType == TradeType.BUY) {
+            TradeObjectMoney require = trade.getRequire(TradeObjectMoney.class);
+            if (require == null) {
+                require = new TradeObjectMoney(0);
+                trade.addRequire(require);
+            }
+            require.edit(event.getPlayer());
+        } else {
+            TradeObjectMoney reward = trade.getReward(TradeObjectMoney.class);
+            if (reward == null) {
+                reward = new TradeObjectMoney(0);
+                trade.addReward(reward);
+            }
+            reward.edit(event.getPlayer());
         }
-        require.edit(event.getPlayer());
+
         return true;
     }
     private boolean btnEventCancel(ButtonClickEvent event) {
@@ -338,18 +431,36 @@ public class EditorTrade {
     }
     private boolean btnEventSave(ButtonClickEvent event) {
         trade.getShop().addTrade(trade);
+        trade.getShop().setLastEditor(event.getPlayer().getName());
+
+        SimpleDateFormat sdf = new SimpleDateFormat();
+        sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        String editTime = sdf.format(date);
+
+        trade.getShop().setLastEditTime(editTime);
         RPGShop.getInstance().shopManager.saveShops();
         EditorShop editorShop = new EditorShop(trade.getShop());
         editorShop.open(event.getPlayer());
         return true;
     }
     private boolean btnEventEditNeedItems(ButtonClickEvent event) {
-        TradeObjectItemStacks require = trade.getRequire(TradeObjectItemStacks.class);
-        if (require == null) {
-            require = new TradeObjectItemStacks();
-            trade.addRequire(require);
+        if (this.editType == TradeType.BUY) {
+            TradeObjectItemStacks require = trade.getRequire(TradeObjectItemStacks.class);
+            if (require == null) {
+                require = new TradeObjectItemStacks();
+                trade.addRequire(require);
+            }
+            require.edit(event.getPlayer());
+        } else {
+            TradeObjectItemStacks reward = trade.getReward(TradeObjectItemStacks.class);
+            if (reward == null) {
+                reward = new TradeObjectItemStacks();
+                trade.addReward(reward);
+            }
+            reward.edit(event.getPlayer());
         }
-        require.edit(event.getPlayer());
+
 
         return true;
     }
