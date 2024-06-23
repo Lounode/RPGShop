@@ -3,6 +3,7 @@ package github.lounode.rpgshop.i18n;
 import java.util.List;
 
 public class RPGI18N extends I18N{
+    public static RPGI18NMessage HELP_BIND;
     public static RPGI18NMessage MESSAGE_NOT_FOUND_SHOP_ID;
     public static RPGI18NMessage HELP_OPEN;
     public static RPGI18NMessage MESSAGE_DELETE_HELP;
@@ -141,6 +142,7 @@ public class RPGI18N extends I18N{
         HELP_RESIZE = register("COMMON.HELP_RESIZE", "&a/rpgshop resize <id> <row> - &f重设商店的大小").addLanguage("en_us", "&a/rpgshop resize <id> <row> - &fResize shop");
         HELP_DELETE = register("COMMON.HELP_DELETE", "&a/rpgshop delete <id> - &f删除指定ID的商店").addLanguage("en_us", "&a/rpgshop delete <id> - &fDelete specified shop");
         HELP_OPEN = register("COMMON.HELP_OPEN", "&a/rpgshop open <id> - &f打开商店").addLanguage("en_us", "&a/rpgshop open <id>  - &fOpen the shop");
+        HELP_BIND = register("COMMON.HELP_BIND", "&a/rpgshop bind <id> <npc-id> - &f绑定商店到Citizens NPC").addLanguage("en_us", "/rpgshop bind <id> <npc-id> - &fBind shop on Citizens NPC");
 
         EDITOR_TITLE = register("SHOP.EDITOR_TITLE", "&b&lRPGShop 编辑器").addLanguage("en_us", "&b&lRPGShop Editor");
         BUTTON_NEXT = register("SHOP.BUTTON_NEXT", "&f&l下一页").addLanguage("en_us", "&f&lNext Page");

@@ -31,8 +31,10 @@ public final class RPGShop extends JavaPlugin {
     private final Metrics metrics = new Metrics(this, PLUGIN_ID);
     private static final String VAULT = "Vault";
     private static final String PLAYER_POINTS = "PlayerPoints";
+    private static final String CITIZENS = "Citizens";
     private boolean vault;
     private boolean playerPoints;
+    private boolean citizens;
     public YmlManager ymlManager = new YmlManager(this, getDataFolder());
     public ConfigManager configManager = new ConfigManager();
     public ShopManager shopManager = new ShopManager();
@@ -47,7 +49,6 @@ public final class RPGShop extends JavaPlugin {
         return playerPoints;
     }
     //TODO 语言文件归一化
-    //TODO 命令打开与NPC绑定
 
 
     @Override
@@ -86,6 +87,11 @@ public final class RPGShop extends JavaPlugin {
             playerPoints = true;
         } else {
             getLogger().warning("No Find PlayerPoints!");
+        }
+        if (Bukkit.getPluginManager().isPluginEnabled(CITIZENS)) {
+            citizens = true;
+        } else {
+            getLogger().warning("No Find Citizens!");
         }
 
         shopManager.onEnable(this);
@@ -143,5 +149,9 @@ public final class RPGShop extends JavaPlugin {
             return normal + debug;
         }
         return normal;
+    }
+
+    public boolean isCitizens() {
+        return citizens;
     }
 }
