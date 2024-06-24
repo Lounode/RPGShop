@@ -51,7 +51,7 @@ public class ConfigManager {
         File languageFile = new File(plugin.getDataFolder(), languageFileName);
         if (!languageFile.exists()) {
             if (!plugin.isDebugVersion()) {
-                plugin.saveResource(languageFileName, false);
+                plugin.saveResource("lang/" + languageFileName, false);
             } else {
                 File genFile = new File(plugin.getDataFolder(), ".datagen/language/" + languageFileName);
                 try {
