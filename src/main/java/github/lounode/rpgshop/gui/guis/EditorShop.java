@@ -25,7 +25,7 @@ public class EditorShop {
         this.shop = shop;
     }
     public void open(Player player) {
-        String title = RPGI18N.EDIT_PREFIX.get(shop.getTitle());
+        String title = RPGI18N.EDIT_TITLE.get(shop.getTitle());
         MultiPageInventory editorOverview = new MultiPageInventory(RPGShop.getInstance().guiManager, shop.getSize(), title, true);
 
         //Init

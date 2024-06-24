@@ -41,7 +41,8 @@ public class RPGShopBindNPCCommand extends RPGShopCommand{
 
         try {
             int id = commands.addCommand(new CommandTrait.NPCCommandBuilder(cmd, hand)
-
+                    .cooldown(0)
+                    .globalCooldown(0)
             );
             Messaging.sendTr(sender, Messages.COMMAND_ADDED, cmd, id);
         } catch (NumberFormatException ex) {

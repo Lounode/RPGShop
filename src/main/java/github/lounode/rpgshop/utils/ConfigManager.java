@@ -46,7 +46,7 @@ public class ConfigManager {
         config = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "config.yml"));
     }
     public void reloadLanguage() {
-        String language = getConfig().getString("language", "en_us");
+        String language = getConfig().getString("language", "zh_cn");
         String languageFileName = String.format("messages_%s.yml", language);
         File languageFile = new File(plugin.getDataFolder(), languageFileName);
         if (!languageFile.exists()) {

@@ -56,6 +56,7 @@ public class I18NMessage {
     protected String FormatMessage(String string, String... args) {
         String result = ChatColor.translateAlternateColorCodes('&', string);
         result = MessageFormat.format(result, args);
+        result = ChatColor.translateAlternateColorCodes('&', result);
         return result;
     }
 }
