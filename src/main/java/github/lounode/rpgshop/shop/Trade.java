@@ -65,12 +65,32 @@ public class Trade implements Cloneable, ConfigurationSerializable {
         //Footer
         List<String> additionalFooter = new ArrayList<>();
         additionalFooter.add("§r");
-        additionalFooter.add(RPGI18N.FOOTER_REQUIRE.get());
+
+        if (canBuy() && canSell()) {
+            additionalFooter.add(RPGI18N.FOOTER_REQUIRE.get());
+        } else if (canBuy() && !canSell()) {
+            additionalFooter.add(RPGI18N.FOOTER_REQUIRE_BUY_ONLY.get());
+        } else if (!canBuy() && canSell()) {
+            additionalFooter.add(RPGI18N.FOOTER_REQUIRE_SELL_ONLY.get());
+        } else {
+            additionalFooter.add(RPGI18N.FOOTER_REQUIRE.get());
+        }
+
         for (TradeObject require : getRequires()) {
             List<String> message = require.getFooters(TradeType.SELL,this, viewer);
             additionalFooter.addAll(message);
         }
-        additionalFooter.add(RPGI18N.FOOTER_REWARD.get());
+
+        if (canBuy() && canSell()) {
+            additionalFooter.add(RPGI18N.FOOTER_REWARD.get());
+        } else if (canBuy() && !canSell()) {
+            additionalFooter.add(RPGI18N.FOOTER_REWARD_BUY_ONLY.get());
+        } else if (!canBuy() && canSell()) {
+            additionalFooter.add(RPGI18N.FOOTER_REWARD_SELL_ONLY.get());
+        } else {
+            additionalFooter.add(RPGI18N.FOOTER_REWARD.get());
+        }
+
         for (TradeObject reward : getRewards()) {
             List<String> message = reward.getFooters(TradeType.BUY,this, viewer);
             additionalFooter.addAll(message);
@@ -82,6 +102,8 @@ public class Trade implements Cloneable, ConfigurationSerializable {
             additionalFooter.add(RPGI18N.FOOTER_TUTORIAL_BUY_ONLY.get());
         } else if (!canBuy() && canSell()) {
             additionalFooter.add(RPGI18N.FOOTER_TUTORIAL_SELL_ONLY.get());
+        } else {
+            additionalFooter.add(RPGI18N.FOOTER_TUTORIAL_DENY.get());
         }
 
 

@@ -3,6 +3,8 @@ package github.lounode.rpgshop.i18n;
 import java.util.List;
 
 public class RPGI18N extends I18N{
+    public static I18NMessage FOOTER_TUTORIAL_DENY;
+    public static I18NMessage TRADE_BUTTON_SWITCH;
     public static RPGI18NMessage HELP_BIND;
     public static RPGI18NMessage MESSAGE_NOT_FOUND_SHOP_ID;
     public static RPGI18NMessage HELP_OPEN;
@@ -117,6 +119,10 @@ public class RPGI18N extends I18N{
     public static RPGI18NMessage RESIZE_SUCCESS;
     public static RPGI18NMessage RESIZE_FAIL;
 
+    public static RPGI18NMessage INFO_SWITCHER_BUY;
+
+    public static RPGI18NMessage INFO_SWITCHER_SELL;
+
     static {
         PREFIX = register("COMMON.PREFIX", "&7[&cRPGShop&7]&r").addLanguage("en_us", "&7[&cRPGShop&7]&r");
         TEST = register("COMMON.TEST", "这是一条测试文本").addLanguage("en_us", "This is a test text");
@@ -176,6 +182,7 @@ public class RPGI18N extends I18N{
         TRADE_BUTTON_IS_INFINITY_TRADE = register("GUI.BUTTON.TRADE_IS_INFINITY_TRADE", "&d无限交易").addLanguage("en_us", "&dInfinite Trade");
         TRADE_BUTTON_API = register("GUI.BUTTON.TRADE_API", "&4API").addLanguage("en_us", "&4API");
         TRADE_BUTTON_BACK = register("GUI.BUTTON.TRADE_BACK", "&4返回").addLanguage("en_us", "&4Back");
+        TRADE_BUTTON_SWITCH = register("GUI.BUTTON.TRADE_SWITCH", "&e切换交易模式").addLanguage("en_us", "&eSwitch Mode");
         //GUI
         //Title
         GUI_TITLE_EDIT_ITEMS = register("GUI.TITLE.EDIT_ITEMS", "&b编辑物品").addLanguage("en_us", "&bEdit Items");
@@ -196,10 +203,10 @@ public class RPGI18N extends I18N{
         EDIT_TITLE_PAGE = register("GUI.INFO.EDIT_TITLE_PAGE", "&8&l | &b&l第 {0} 页，共 {1} 页").addLanguage("en_us", "&8&l | &b&lPage {0} of {1}");
         FOOTER_REWARD = register("GUI.INFO.REWARD", "&e&m------&e&l 【&a&l购买&e&l】 &e&m------").addLanguage("en_us", "&e&m------&e&l 【&a&lBuy&e&l】 &e&m------");
         FOOTER_REQUIRE = register("GUI.INFO.REQUIRE", "&e&m------&e&l 【&c&l出售&e&l】 &e&m------").addLanguage("en_us", "&e&m------&e&l 【&c&lSell&e&l】 &e&m------");
-        FOOTER_REWARD_BUY_ONLY = register("GUI.INFO.REWARD_BUY-ONLY", "&e&m------ &e&l【购买所得&e&m】 &e&m------").addLanguage("en_us", "&e&m------ &e&l【Buy Reward&e&m】 &e&m------");
-        FOOTER_REWARD_SELL_ONLY = register("GUI.INFO.REWARD_SELL-ONLY", "&e&m------ &e&l【出售所得&e&m】 &e&m------").addLanguage("en_us", "&e&m------ &e&l【Sell Reward&e&m】 &e&m------");
-        FOOTER_REQUIRE_BUY_ONLY = register("GUI.INFO.REQUIRE_BUY-ONLY", "&e&m------ &e&l【购买需求&e&m】 &e&m------").addLanguage("en_us", "&e&m------ &e&l【Buy Requirement&e&m】 &e&m------");
-        FOOTER_REQUIRE_SELL_ONLY = register("GUI.INFO.REQUIRE_SELL-ONLY", "&e&m------ &e&l【出售需求&e&m】 &e&m------").addLanguage("en_us", "&e&m------ &e&l【Sell Requirement&e&m】 &e&m------");
+        FOOTER_REWARD_BUY_ONLY = register("GUI.INFO.REWARD_BUY-ONLY", "&e&m------ &e&l【&a&l购买&e&l】 &e&m------").addLanguage("en_us", "&e&m------ &e&l【Buy Reward&e&m】 &e&m------");
+        FOOTER_REWARD_SELL_ONLY = register("GUI.INFO.REWARD_SELL-ONLY", "&e&m------ &e&l【&c&l出售&e&l】 &e&m------").addLanguage("en_us", "&e&m------ &e&l【Sell Reward&e&m】 &e&m------");
+        FOOTER_REQUIRE_BUY_ONLY = register("GUI.INFO.REQUIRE_BUY-ONLY", "&e&m------ &e&l【&e&l需求&e&l】 &e&m------").addLanguage("en_us", "&e&m------ &e&l【Buy Requirement&e&m】 &e&m------");
+        FOOTER_REQUIRE_SELL_ONLY = register("GUI.INFO.REQUIRE_SELL-ONLY", "&e&m------ &e&l【&e&l获得&e&l】 &e&m------").addLanguage("en_us", "&e&m------ &e&l【Sell Requirement&e&m】 &e&m------");
         FOOTER_TUTORIAL = register("GUI.INFO.TUTORIAL", "&a左键购买，右键出售").addLanguage("en_us", "&aLeft-click to buy, right-click to sell");
         FOOTER_TUTORIAL_BUY_ONLY = register("GUI.INFO.TUTORIAL_BUY-ONLY", "&a左键购买").addLanguage("en_us", "&aLeft-click to buy");
         FOOTER_TUTORIAL_SELL_ONLY = register("GUI.INFO.TUTORIAL_SELL-ONLY", "&a左键出售").addLanguage("en_us", "&aLeft-click to sell");
@@ -208,6 +215,7 @@ public class RPGI18N extends I18N{
         FOOTER_TRADEOBJ_DENY = register("GUI.INFO.TRADEOBJ_DENY", "&c&l✘ &f{0} &f× {1}").addLanguage("en_us", "&c&l✘ &f{0} &f× {1}");
         FOOTER_LINE = register("GUI.INFO.LINE", "&e&m------------------------").addLanguage("en_us", "&e&m------------------------");
         FOOTER_EDIT = register("GUI.INFO.EDIT", "&a&m------&a&l 【点击编辑】 &a&m------").addLanguage("en_us", "&a&m------&a&l 【Click to Edit】 &a&m------");
+        FOOTER_TUTORIAL_DENY = register("GUI.INFO.TUTORIAL_DENY", "&c展示用，无法交易").addLanguage("en_us", "&cDisplay only, cannot trade!");
 
         INFO_MONEY_UNSET = register("GUI.INFO.MONEY_UNSET", "&c未设置").addLanguage("en_us", "&cNot Set");
         INFO_MONEY = register("GUI.INFO.MONEY", "&e需求: &a {0} {1}").addLanguage("en_us", "&eNeed: &a {0} {1}");
@@ -226,7 +234,9 @@ public class RPGI18N extends I18N{
         INFO_CAN_INFINITY = register("GUI.INFO.CAN_INFINITY", "&e状态: {0}").addLanguage("en_us", "&eStatus: ");
         INFO_STATUS_ENABLED = register("GUI.INFO.STATUS_ENABLED", "&a启用").addLanguage("en_us", "&aEnabled");
         INFO_STATUS_DISABLED = register("GUI.INFO.STATUS_DISABLED", "&c关闭").addLanguage("en_us", "&cDisabled");
-
+        //INFO_SWITCHER = register("GUI.INFO.SWITCHER", "&e购买状态: {0}\n&e出售状态: {1}").addLanguage("en_us", "&eBuy: {0}\n&eSell: {1}");
+        INFO_SWITCHER_BUY = register("GUI.INFO.SWITCHER_BUY", "&e购买状态: {0}").addLanguage("en_us", "&eBuy: {0}");
+        INFO_SWITCHER_SELL = register("GUI.INFO.SWITCHER_SELL", "&e出售状态: {0}").addLanguage("en_us", "&eSell: {0}");
         //Help
         HELP_HEADER = register("COMMON.HELP_HEADER", "&7---------- {PREFIX} ----------").addLanguage("en_us", "&7---------- {PREFIX} ----------");
         HELP_RELOAD = register("COMMON.HELP_RELOAD", "&a/rpgshop reload - &f重载插件").addLanguage("en_us", "&a/rpgshop reload - &fReload plugin");

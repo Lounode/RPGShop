@@ -295,7 +295,27 @@ public class EditorTrade {
         isSellButton.addClickListener(this::btnEventSwitchCanSell);
         editTradeGUI.setButton(39, isSellButton);
         */
+        //SwitchTradeType
+        ItemStack switcher = new ItemStack(Material.BOOK);
+        ItemMeta switcherMeta = switcher.getItemMeta();
+        switcherMeta.setDisplayName(RPGI18N.TRADE_BUTTON_SWITCH.get());
+        switcherMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        List<String> switcherLore = new ArrayList<>();
+        switcherLore.add("§r");
+        String buyStatus = trade.canBuy() ? RPGI18N.INFO_STATUS_ENABLED.get() : RPGI18N.INFO_STATUS_DISABLED.get();
+        String sellStatus = trade.canSell() ? RPGI18N.INFO_STATUS_ENABLED.get() : RPGI18N.INFO_STATUS_DISABLED.get();
+
+        switcherLore.add(RPGI18N.INFO_SWITCHER_BUY.get(buyStatus));
+        switcherLore.add(RPGI18N.INFO_SWITCHER_SELL.get(sellStatus));
+        switcherMeta.setLore(switcherLore);
+        switcher.setItemMeta(switcherMeta);
+
+        Button switcherButton = new Button(switcher);
+        switcherButton.addClickListener(this::btnEventSwitcher);
+        editTradeGUI.setButton(40, switcherButton);
+
         // IsInfinityTrade
+        /*
         ItemStack infinityItem = new ItemStack(Material.ENCHANTED_BOOK);
         if (!trade.canInfinity()) {
             infinityItem = new ItemStack(Material.BOOK);
@@ -322,6 +342,7 @@ public class EditorTrade {
         Button isInfinityButton = new Button(infinityItem);
         isInfinityButton.addClickListener(this::btnEventSwitchCanInfinity);
         editTradeGUI.setButton(40, isInfinityButton);
+        */
         //API
         ItemStack apiItem = new ItemStack(Material.PISTON_BASE);
         ItemMeta apiMeta = apiItem.getItemMeta();
@@ -353,6 +374,24 @@ public class EditorTrade {
 
         editTradeGUI.open(editor);
     }
+
+    private boolean btnEventSwitcher(ButtonClickEvent event) {
+        if (trade.canBuy() && trade.canSell()) {
+            trade.setSell(false);
+        } else if (trade.canBuy() && !trade.canSell()) {
+            trade.setBuy(false);
+            trade.setSell(true);
+        } else if (!trade.canBuy() && trade.canSell()) {
+            trade.setBuy(false);
+            trade.setSell(false);
+        } else if (!trade.canBuy() && !trade.canSell()) {
+            trade.setBuy(true);
+            trade.setSell(true);
+        }
+        open(event.getPlayer());
+        return true;
+    }
+
     private boolean btnEventSwitch(ButtonClickEvent event) {
         TradeType toType = this.editType == TradeType.BUY ? TradeType.SELL : TradeType.BUY;
         this.editType = toType;
