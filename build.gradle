@@ -27,6 +27,8 @@ repositories {
     }
     //Citizens
     maven { url 'https://maven.enginehub.org/repo/' }
+    maven { url 'https://repo.dmulloy2.net/repository/public/' }
+    maven { url 'https://repo.alessiodp.com/releases/' }
 }
 task printVersion {
     doLast {
