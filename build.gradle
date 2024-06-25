@@ -2,8 +2,8 @@ plugins {
     id 'java'
 }
 
-group 'github.lounode'
-version '1.0.0'
+group = project.maven_group
+version = project.plugin_version
 
 repositories {
     mavenCentral()
@@ -25,9 +25,8 @@ repositories {
         name = "Player Points"
         url = "https://repo.rosewooddev.io/repository/public/"
     }
+    //Citizens
     maven { url 'https://maven.enginehub.org/repo/' }
-    maven { url 'https://repo.dmulloy2.net/repository/public/' }
-    maven { url 'https://repo.alessiodp.com/releases/' }
 }
 task printVersion {
     doLast {
@@ -65,7 +64,9 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 processResources {
-    def props = [version: version]
+    def props = [
+            version: version
+    ]
     inputs.properties props
     filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {
