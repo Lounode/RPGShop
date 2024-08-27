@@ -4,7 +4,6 @@ import github.lounode.rpgshop.RPGShop;
 import github.lounode.rpgshop.gui.Button;
 import github.lounode.rpgshop.gui.ButtonClickEvent;
 import github.lounode.rpgshop.gui.MultiPageInventory;
-import github.lounode.rpgshop.i18n.RPGI18N;
 import github.lounode.rpgshop.shop.Shop;
 import github.lounode.rpgshop.shop.Trade;
 import org.bukkit.Material;
@@ -25,14 +24,14 @@ public class EditorShop {
         this.shop = shop;
     }
     public void open(Player player) {
-        String title = RPGI18N.EDIT_TITLE.get(shop.getTitle());
+        String title = RPGShop.getInstance().getI18N("gui.title.edit");
         MultiPageInventory editorOverview = new MultiPageInventory(RPGShop.getInstance().guiManager, shop.getSize(), title, true);
 
         //Init
 
         ItemStack createSkin = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
         ItemMeta createMeta = createSkin.getItemMeta();
-        createMeta.setDisplayName(RPGI18N.BUTTON_CREATE.get());
+        createMeta.setDisplayName(RPGShop.getInstance().getI18N("gui.button.create"));
         createSkin.setItemMeta(createMeta);
 
         Button create = new Button(createSkin);
@@ -58,7 +57,7 @@ public class EditorShop {
         //Exit
         ItemStack exitButtonSkin = new ItemStack(Material.BARRIER);
         ItemMeta exitButtonMeta = exitButtonSkin.getItemMeta();
-        exitButtonMeta.setDisplayName(RPGI18N.BUTTON_EXIT.get());
+        exitButtonMeta.setDisplayName(RPGShop.getInstance().getI18N("gui.button.exit"));
         exitButtonSkin.setItemMeta(exitButtonMeta);
         Button exitButton = new Button(exitButtonSkin);
         exitButton.addClickListener(this::btnEventReturn);
@@ -68,7 +67,7 @@ public class EditorShop {
         //Open
         ItemStack openButton = new ItemStack(Material.EYE_OF_ENDER);
         ItemMeta openButtonMeta = openButton.getItemMeta();
-        openButtonMeta.setDisplayName(RPGI18N.BUTTON_OPEN.get());
+        openButtonMeta.setDisplayName(RPGShop.getInstance().getI18N("gui.button.open"));
         openButton.setItemMeta(openButtonMeta);
 
         Button open = new Button(openButton);

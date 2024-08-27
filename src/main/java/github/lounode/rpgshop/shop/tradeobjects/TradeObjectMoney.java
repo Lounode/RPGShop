@@ -1,8 +1,8 @@
 package github.lounode.rpgshop.shop.tradeobjects;
 
+import github.lounode.rpgshop.RPGShop;
 import github.lounode.rpgshop.chat.ChatHandle;
 import github.lounode.rpgshop.gui.guis.EditorTrade;
-import github.lounode.rpgshop.i18n.RPGI18N;
 import github.lounode.rpgshop.shop.Trade;
 import github.lounode.rpgshop.shop.TradeType;
 import github.lounode.rpgshop.utils.VaultAPI;
@@ -71,7 +71,7 @@ public class TradeObjectMoney extends TradeObject{
                 return true;
             case SELL:
                 if (!VaultAPI.has(player, getMoney())) {
-                    player.sendMessage(RPGI18N.MESSAGE_NOT_ENOUGH_MONEY.get(
+                    player.sendMessage(RPGShop.getInstance().getI18N("message.not_enough_money",
                             getMoney(),
                             currencyNamePlural,
                             VaultAPI.get(player),
@@ -93,13 +93,13 @@ public class TradeObjectMoney extends TradeObject{
 
         String messages;
         if (VaultAPI.has(viewer, money)) {
-            messages = RPGI18N.FOOTER_TRADEOBJ_PASS.get(currencyNamePlural, money);
+            messages = RPGShop.getInstance().getI18N("gui.info.tradeobj_pass", currencyNamePlural, money);
         } else {
-            messages = RPGI18N.FOOTER_TRADEOBJ_DENY.get(currencyNamePlural, money);
+            messages = RPGShop.getInstance().getI18N("gui.info.tradeobj_deny", currencyNamePlural, money);
         }
 
         if (checkIsDisplayMode(trade.canBuy(), trade.canSell(), type) || forceNorm) {
-            messages = RPGI18N.FOOTER_TRADEOBJ_NORM.get(currencyNamePlural, money);
+            messages = RPGShop.getInstance().getI18N("gui.info.tradeobj_norm", currencyNamePlural, money);
         }
 
         result.add(messages);
@@ -127,7 +127,7 @@ public class TradeObjectMoney extends TradeObject{
     }
 
     public void edit(Player player) {
-        player.sendMessage(RPGI18N.MESSAGE_INPUT_CHAT.get(
+        player.sendMessage(RPGShop.getInstance().getI18N("message.input_chat",
                 "1",
                 "Double"
         ));

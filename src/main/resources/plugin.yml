@@ -3,6 +3,8 @@ version: ${version}
 main: github.lounode.rpgshop.RPGShop
 author: Lounode
 api-version: 1.12.2
+depend:
+  - Spearmintlib
 softdepend:
   - PlaceholderAPI
   - Vault

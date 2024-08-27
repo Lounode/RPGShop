@@ -1,9 +1,10 @@
 package github.lounode.rpgshop.shop;
 
 import github.lounode.rpgshop.RPGShop;
-import github.lounode.rpgshop.i18n.RPGI18N;
 import github.lounode.rpgshop.shop.tradeobjects.TradeObject;
 import github.lounode.rpgshop.shop.tradeobjects.TradeObjectItemStacks;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
@@ -16,27 +17,23 @@ import java.util.List;
 import java.util.Map;
 
 public class Trade implements Cloneable, ConfigurationSerializable {
+    @Getter
     private RPGShop plugin;
+    @Getter
+    @Setter
     private Shop shop;
     //private ItemStack item;
     private int slot = -1;
+    @Getter
     private List<TradeObject> requires = new ArrayList<>();
+    @Getter
     private List<TradeObject> rewards = new ArrayList<>();
 
-    public void setBuy(boolean buy) {
-        this.buy = buy;
-    }
-
-    public void setSell(boolean sell) {
-        this.sell = sell;
-    }
-
-    public void setInfinity(boolean infinity) {
-        this.infinity = infinity;
-    }
-
+    @Setter
     private boolean buy;
+    @Setter
     private boolean sell;
+    @Setter
     private boolean infinity;
 
     public Trade(int slot) {
@@ -46,9 +43,7 @@ public class Trade implements Cloneable, ConfigurationSerializable {
         this.sell = true;
         this.infinity = true;
     }
-    public void setShop(Shop shop) {
-        this.shop = shop;
-    }
+
     public boolean canBuy () { return buy;}
     public boolean canSell () { return sell;}
     public boolean canInfinity () {return infinity;}
@@ -67,13 +62,13 @@ public class Trade implements Cloneable, ConfigurationSerializable {
         additionalFooter.add("§r");
 
         if (canBuy() && canSell()) {
-            additionalFooter.add(RPGI18N.FOOTER_REQUIRE.get());
+            additionalFooter.add(plugin.getI18N("gui.info.item_require"));
         } else if (canBuy() && !canSell()) {
-            additionalFooter.add(RPGI18N.FOOTER_REQUIRE_BUY_ONLY.get());
+            additionalFooter.add(plugin.getI18N("gui.info.require_buy_only"));
         } else if (!canBuy() && canSell()) {
-            additionalFooter.add(RPGI18N.FOOTER_REQUIRE_SELL_ONLY.get());
+            additionalFooter.add(plugin.getI18N("gui.info.require_sell_only"));
         } else {
-            additionalFooter.add(RPGI18N.FOOTER_REQUIRE.get());
+            additionalFooter.add(plugin.getI18N("gui.info.require"));
         }
 
         for (TradeObject require : getRequires()) {
@@ -82,13 +77,13 @@ public class Trade implements Cloneable, ConfigurationSerializable {
         }
 
         if (canBuy() && canSell()) {
-            additionalFooter.add(RPGI18N.FOOTER_REWARD.get());
+            additionalFooter.add(plugin.getI18N("gui.info.item_reward"));
         } else if (canBuy() && !canSell()) {
-            additionalFooter.add(RPGI18N.FOOTER_REWARD_BUY_ONLY.get());
+            additionalFooter.add(plugin.getI18N("gui.info.reward_buy_only"));
         } else if (!canBuy() && canSell()) {
-            additionalFooter.add(RPGI18N.FOOTER_REWARD_SELL_ONLY.get());
+            additionalFooter.add(plugin.getI18N("gui.info.reward_sell_only"));
         } else {
-            additionalFooter.add(RPGI18N.FOOTER_REWARD.get());
+            additionalFooter.add(plugin.getI18N("gui.info.reward"));
         }
 
         for (TradeObject reward : getRewards()) {
@@ -97,13 +92,13 @@ public class Trade implements Cloneable, ConfigurationSerializable {
         }
         additionalFooter.add("§r");
         if (canBuy() && canSell()) {
-            additionalFooter.add(RPGI18N.FOOTER_TUTORIAL.get());
+            additionalFooter.add(plugin.getI18N("gui.info.tutorial"));
         } else if (canBuy() && !canSell()) {
-            additionalFooter.add(RPGI18N.FOOTER_TUTORIAL_BUY_ONLY.get());
+            additionalFooter.add(plugin.getI18N("gui.info.tutorial_buy_only"));
         } else if (!canBuy() && canSell()) {
-            additionalFooter.add(RPGI18N.FOOTER_TUTORIAL_SELL_ONLY.get());
+            additionalFooter.add(plugin.getI18N("gui.info.tutorial_sell_only"));
         } else {
-            additionalFooter.add(RPGI18N.FOOTER_TUTORIAL_DENY.get());
+            additionalFooter.add(plugin.getI18N("gui.info.tutorial_deny"));
         }
 
 
@@ -123,14 +118,14 @@ public class Trade implements Cloneable, ConfigurationSerializable {
 
         List<String> additionalFooter = new ArrayList<>();
         additionalFooter.add("§r");
-        additionalFooter.add(RPGI18N.FOOTER_EDIT.get());
+        additionalFooter.add(plugin.getI18N("gui.info.edit"));
         additionalFooter.add("§r");
-        additionalFooter.add(RPGI18N.FOOTER_REQUIRE.get());
+        additionalFooter.add(plugin.getI18N("gui.info.require"));
         for (TradeObject require : getRequires()) {
             List<String> message = require.getFooters(TradeType.SELL,this, viewer, true);
             additionalFooter.addAll(message);
         }
-        additionalFooter.add(RPGI18N.FOOTER_REWARD.get());
+        additionalFooter.add(plugin.getI18N("gui.info.reward"));
         for (TradeObject reward : getRewards()) {
             List<String> message = reward.getFooters(TradeType.BUY,this, viewer, true);
             additionalFooter.addAll(message);
@@ -173,12 +168,7 @@ public class Trade implements Cloneable, ConfigurationSerializable {
         }
         return null;
     }
-    public List<TradeObject> getRequires() {
-        return requires;
-    }
-    public List<TradeObject> getRewards() {
-        return rewards;
-    }
+
     public boolean addRequire(TradeObject require) {
         require.setTrade(this);
         return requires.add(require);
@@ -270,7 +260,4 @@ public class Trade implements Cloneable, ConfigurationSerializable {
         }
     }
 
-    public Shop getShop() {
-        return shop;
-    }
 }

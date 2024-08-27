@@ -4,6 +4,7 @@ import github.lounode.rpgshop.gui.events.GUICloseCallback;
 import github.lounode.rpgshop.gui.events.GUICloseEvent;
 import github.lounode.rpgshop.gui.events.GUIOpenCallback;
 import github.lounode.rpgshop.gui.events.GUIOpenEvent;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GUI implements Listener {
+    @Getter
     private GUIManager manager;
     private List<GUIOpenCallback> openCallbacks;
     private List<GUICloseCallback> closeCallbacks;
@@ -38,7 +40,7 @@ public abstract class GUI implements Listener {
         this.closeCallbacks = new ArrayList<>();
 
         resetSlots();
-        Bukkit.getPluginManager().registerEvents(this, manager.plugin);
+        Bukkit.getPluginManager().registerEvents(this, manager.getPlugin());
     }
 
     public void open(Player player) {
@@ -66,10 +68,6 @@ public abstract class GUI implements Listener {
     }
     public void setDenyInvClick (boolean type) {
         this.denyInvClick = type;
-    }
-
-    public GUIManager getManager() {
-        return manager;
     }
 
     public Inventory getInventory() {

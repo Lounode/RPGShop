@@ -1,7 +1,6 @@
 package github.lounode.rpgshop.command;
 
 import github.lounode.rpgshop.RPGShop;
-import github.lounode.rpgshop.i18n.RPGI18N;
 import github.lounode.rpgshop.shop.Shop;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -22,15 +21,15 @@ public class RPGShopCreateCommand extends RPGShopCommand{
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         args = Arrays.copyOfRange(args, 1, args.length);
         if (args.length != 3) {
-            sender.sendMessage(RPGI18N.CREATE_INVALID_FORMAT.get());
+            sender.sendMessage(plugin.getI18N("message.create_invalid_format"));
             return false;
         }
         if (hasInvalidCharacters(args[0])) {
-            sender.sendMessage(RPGI18N.CREATE_INVALID_ID.get());
+            sender.sendMessage(plugin.getI18N("message.create_invalid_id"));
             return false;
         }
         if (!isNumeric(args[1])) {
-            sender.sendMessage(RPGI18N.CREATE_INVALID_NUMBER.get());
+            sender.sendMessage(plugin.getI18N("message.create_invalid_number"));
             return false;
         }
 
@@ -46,14 +45,14 @@ public class RPGShopCreateCommand extends RPGShopCommand{
 
         Shop shop = plugin.shopManager.createShop(sender, id ,row, title);
         if (shop == null){
-            sender.sendMessage(RPGI18N.MESSAGE_SAVE_FAIL.get(id + ".yml", RPGI18N.MESSAGE_REASON_ALREADY.get()));
+            sender.sendMessage(plugin.getI18N("message.save_fail", id + ".yml", plugin.getI18N("message.reason_already")));
             return false;
         }
         shop.setOwner(owner);
         shop.setCreateTime(createTime);
         plugin.shopManager.saveShops();
 
-        sender.sendMessage(RPGI18N.CREATE_SUCCESS.get(row, title, id));
+        sender.sendMessage(plugin.getI18N("message.create_success", row, title, id));
         return true;
     }
     private boolean hasInvalidCharacters(String string) {

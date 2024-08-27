@@ -1,7 +1,7 @@
 package github.lounode.rpgshop.shop.tradeobjects;
 
+import github.lounode.rpgshop.RPGShop;
 import github.lounode.rpgshop.gui.guis.EditorTradeObjectItemStacks;
-import github.lounode.rpgshop.i18n.RPGI18N;
 import github.lounode.rpgshop.shop.Trade;
 import github.lounode.rpgshop.shop.TradeType;
 import github.lounode.rpgshop.utils.ItemPair;
@@ -65,13 +65,13 @@ public class TradeObjectItemStacks extends TradeObject {
 
             String messages;
             if (playerContents.getCount(item) >= count) {
-                messages = RPGI18N.FOOTER_TRADEOBJ_PASS.get(itemDisplayName, getCounter().getCount(item));
+                messages = RPGShop.getInstance().getI18N("gui.info.tradeobj_pass", itemDisplayName, getCounter().getCount(item));
             } else {
-                messages = RPGI18N.FOOTER_TRADEOBJ_DENY.get(itemDisplayName, getCounter().getCount(item));
+                messages = RPGShop.getInstance().getI18N("gui.info.tradeobj_deny", itemDisplayName, getCounter().getCount(item));
             }
 
             if (checkIsDisplayMode(trade.canBuy(), trade.canSell(), type) || forceNorm) {
-                messages = RPGI18N.FOOTER_TRADEOBJ_NORM.get(itemDisplayName, getCounter().getCount(item));
+                messages = RPGShop.getInstance().getI18N("gui.info.tradeobj_norm", itemDisplayName, getCounter().getCount(item));
             }
             result.add(messages);
         }
@@ -86,7 +86,7 @@ public class TradeObjectItemStacks extends TradeObject {
         switch (type){
             case BUY:
                 if (!hasAvailableSlot(player, requireSlots)) {
-                    player.sendMessage(RPGI18N.MESSAGE_NEED_EMPTY_SLOTS.get(requireSlots));
+                    player.sendMessage(RPGShop.getInstance().getI18N("message.need_empty_slots", requireSlots));
                     return false;
                 }
                 return true;
@@ -98,7 +98,7 @@ public class TradeObjectItemStacks extends TradeObject {
                     ItemStack itemStack = result.getValue();
                     String itemDisplayName = ItemUtil.getDisplayName(itemStack);
 
-                    player.sendMessage(RPGI18N.MESSAGE_NOT_ENOUGH_CONTENTS.get(
+                    player.sendMessage(RPGShop.getInstance().getI18N("message.not_enough_contents",
                             getCounter().getCount(itemStack),
                             itemDisplayName,
                             counterPlayer.getCount(itemStack)

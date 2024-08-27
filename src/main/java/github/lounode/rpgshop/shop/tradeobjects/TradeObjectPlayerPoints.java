@@ -1,8 +1,8 @@
 package github.lounode.rpgshop.shop.tradeobjects;
 
+import github.lounode.rpgshop.RPGShop;
 import github.lounode.rpgshop.chat.ChatHandle;
 import github.lounode.rpgshop.gui.guis.EditorTrade;
-import github.lounode.rpgshop.i18n.RPGI18N;
 import github.lounode.rpgshop.shop.Trade;
 import github.lounode.rpgshop.shop.TradeType;
 import org.black_ixx.playerpoints.PlayerPoints;
@@ -76,7 +76,7 @@ public class TradeObjectPlayerPoints extends TradeObject{
                 return true;
             case SELL:
                 if (getPoints() > pointsAPI.look(player.getUniqueId())) {
-                    player.sendMessage(RPGI18N.MESSAGE_NOT_ENOUGH_POINTS.get(
+                    player.sendMessage(RPGShop.getInstance().getI18N("message.not_enough_points",
                             getPoints(),
                             pointsNamePlural,
                             pointsAPI.look(player.getUniqueId()),
@@ -98,13 +98,13 @@ public class TradeObjectPlayerPoints extends TradeObject{
 
         String messages;
         if (point <= pointsAPI.look(viewer.getUniqueId())) {
-            messages = RPGI18N.FOOTER_TRADEOBJ_PASS.get(currencyNamePlural, point);
+            messages = RPGShop.getInstance().getI18N("gui.info.tradeobj_pass",currencyNamePlural, point);
         } else {
-            messages = RPGI18N.FOOTER_TRADEOBJ_DENY.get(currencyNamePlural, point);
+            messages = RPGShop.getInstance().getI18N("gui.info.tradeobj_deny",currencyNamePlural, point);
         }
 
         if (checkIsDisplayMode(trade.canBuy(), trade.canSell(), type) || forceNorm) {
-            messages = RPGI18N.FOOTER_TRADEOBJ_NORM.get(currencyNamePlural, point);
+            messages = RPGShop.getInstance().getI18N("gui.info.tradeobj_norm",currencyNamePlural, point);
         }
 
         result.add(messages);
@@ -132,7 +132,7 @@ public class TradeObjectPlayerPoints extends TradeObject{
         return tradeObj;
     }
     public void edit(Player player) {
-        player.sendMessage(RPGI18N.MESSAGE_INPUT_CHAT.get(
+        player.sendMessage(RPGShop.getInstance().getI18N("message.input_chat",
                 "1",
                 "Int"
         ));

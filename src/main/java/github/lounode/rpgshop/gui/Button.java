@@ -1,6 +1,6 @@
 package github.lounode.rpgshop.gui;
 
-import github.lounode.rpgshop.utils.Formater;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -16,7 +16,7 @@ public class Button {
     public Button () {
         ItemStack defaultSkin = new ItemStack(Material.BARRIER);
         ItemMeta meta = defaultSkin.getItemMeta();
-        meta.setDisplayName(Formater.FormatMessage("&4&lButton Skin ERROR"));
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',"&4&lButton Skin ERROR"));
         defaultSkin.setItemMeta(meta);
         this.skin = defaultSkin;
     }

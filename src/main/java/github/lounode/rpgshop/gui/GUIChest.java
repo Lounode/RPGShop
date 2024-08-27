@@ -1,7 +1,7 @@
 package github.lounode.rpgshop.gui;
 
-import github.lounode.rpgshop.utils.Formater;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,7 +21,7 @@ public abstract class GUIChest implements Listener {
         this.buttons = new HashMap<>();
         this.inventory = Bukkit.createInventory(holder, 54, getTitle());
         create();
-        Bukkit.getPluginManager().registerEvents(this, manager.plugin);
+        Bukkit.getPluginManager().registerEvents(this, manager.getPlugin());
     }
     public Inventory getInventory() {
         return inventory;
@@ -37,7 +37,7 @@ public abstract class GUIChest implements Listener {
 
     }
     public String getTitle() {
-        return Formater.FormatMessage("&4&lNULL");
+        return ChatColor.translateAlternateColorCodes('&', "&4&lNULL");
     }
 
     public boolean denyAnyClick() {

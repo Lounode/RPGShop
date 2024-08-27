@@ -1,7 +1,7 @@
 package github.lounode.rpgshop;
 
+import com.demonwav.mcdev.annotations.Translatable;
 import github.lounode.rpgshop.command.RPGShopCommandExecutor;
-import github.lounode.rpgshop.datagen.RPGShopDataGenerator;
 import github.lounode.rpgshop.gui.GUIManager;
 import github.lounode.rpgshop.shop.Shop;
 import github.lounode.rpgshop.shop.ShopManager;
@@ -11,10 +11,13 @@ import github.lounode.rpgshop.shop.tradeobjects.TradeObjectItemStacks;
 import github.lounode.rpgshop.shop.tradeobjects.TradeObjectMoney;
 import github.lounode.rpgshop.shop.tradeobjects.TradeObjectPlayerPoints;
 import github.lounode.rpgshop.utils.*;
+import github.lounode.rpgshop.utils.citizens.CitizensListener;
+import github.lounode.rpgshop.utils.citizens.RPGShopTrait;
+import github.lounode.spearmintlib.bukkit.BukkitPlugin;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.plugin.java.JavaPlugin;
 
 
 /**
@@ -24,36 +27,32 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author Lounode
  * @date 2024/04/11
  */
-public final class RPGShop extends JavaPlugin {
-    private static RPGShop instance;
-    private final RPGShopDataGenerator DATA_GENERATOR = new RPGShopDataGenerator(this);
+public final class RPGShop extends BukkitPlugin<RPGShop> {
     private static final int PLUGIN_ID = 21967;
-    private final Metrics metrics = new Metrics(this, PLUGIN_ID);
+    private final Metrics METRICS = new Metrics(this, PLUGIN_ID);
     private static final String VAULT = "Vault";
     private static final String PLAYER_POINTS = "PlayerPoints";
     private static final String CITIZENS = "Citizens";
+    @Getter
     private boolean vault;
+    @Getter
     private boolean playerPoints;
+    @Getter
     private boolean citizens;
-    public YmlManager ymlManager = new YmlManager(this, getDataFolder());
     public ConfigManager configManager = new ConfigManager();
+    @Getter
     public ShopManager shopManager = new ShopManager();
     public GUIManager guiManager = new GUIManager();
-    public static RPGShop getInstance() {
-        return instance;
-    }
-    public boolean isVault() {
-        return vault;
-    }
-    public boolean isPlayerPoints() {
-        return playerPoints;
-    }
-    //TODO 语言文件归一化
+
 
 
     @Override
-    public void onEnable() {
-        instance = this;
+    public void onLoad() {
+
+
+        String languageCode = getConfig().getString("language","en_us");
+        getI18N().reloadMessages(languageCode);
+
         ConfigurationSerialization.registerClass(ItemStackCounter.class, "ItemStackCounter");
         ConfigurationSerialization.registerClass(ItemPair.class, "ItemPair");
         ConfigurationSerialization.registerClass(Shop.class, "Shop");
@@ -63,14 +62,18 @@ public final class RPGShop extends JavaPlugin {
         ConfigurationSerialization.registerClass(TradeObjectMoney.class, "TradeObjectMoney");
         ConfigurationSerialization.registerClass(TradeObjectPlayerPoints.class, "TradeObjectPlayerPoints");
         ConfigurationSerialization.registerClass(TradeObjectExpLevel.class, "TradeObjectItemExpLevel");
+    }
 
+    @Override
+    public void onEnable() {
         getLogger().info(getWelcome());
+        /*
         if (isDebugVersion()) {
             DATA_GENERATOR.onInitializeDataGenerator();
             DATA_GENERATOR.generatorAll();
         }
+        */
 
-        ymlManager.reloadYmls();
 
         if (Bukkit.getPluginManager().isPluginEnabled(VAULT)) {
             try {
@@ -90,6 +93,9 @@ public final class RPGShop extends JavaPlugin {
         }
         if (Bukkit.getPluginManager().isPluginEnabled(CITIZENS)) {
             citizens = true;
+            net.citizensnpcs.api.CitizensAPI.getTraitFactory()
+                    .registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(RPGShopTrait.class));
+            Bukkit.getPluginManager().registerEvents(new CitizensListener(), this);
         } else {
             getLogger().warning("No Find Citizens!");
         }
@@ -106,25 +112,11 @@ public final class RPGShop extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        ConfigurationSerialization.unregisterClass("ItemStackCounter");
-        ConfigurationSerialization.unregisterClass("ItemPair");
-        ConfigurationSerialization.unregisterClass("Trade");
-        ConfigurationSerialization.unregisterClass("Shop");
-        //TradeObjects
-        ConfigurationSerialization.unregisterClass("TradeObjectItemStacks");
-        ConfigurationSerialization.unregisterClass("TradeObjectMoney");
-        ConfigurationSerialization.unregisterClass("TradeObjectPlayerPoints");
-        ConfigurationSerialization.unregisterClass("TradeObjectItemExpLevel");
-
 
         configManager.onDisable();
         shopManager.onDisable();
     }
 
-    public boolean isDebugVersion() {
-        String debugProperty = System.getProperty("debug");
-        return "true".equals(debugProperty);
-    }
     private String getWelcome() {
         String normal =
                 "\n  _____  _____   _____  _____ _    _  ____  _____  \n" +
@@ -150,8 +142,15 @@ public final class RPGShop extends JavaPlugin {
         }
         return normal;
     }
+    public static RPGShop getInstance() {
+        return (RPGShop) instance;
+    }
 
-    public boolean isCitizens() {
-        return citizens;
+    @Override
+    public String getI18N(@Translatable String key, Object... args) {
+        String result = super.getI18N(key, args);
+        result = result.replace("{PREFIX}", super.getI18N("common.prefix"));
+        result = ChatColor.translateAlternateColorCodes('&', result);
+        return result;
     }
 }

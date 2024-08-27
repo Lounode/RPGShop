@@ -3,6 +3,7 @@ package github.lounode.rpgshop.command;
 import github.lounode.rpgshop.RPGShop;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class RPGShopTestCommand extends RPGShopCommand{
     public RPGShopTestCommand(RPGShop plugin) {
@@ -36,6 +37,8 @@ public class RPGShopTestCommand extends RPGShopCommand{
         player.spigot().sendMessage(giveMessage);
 
          */
+        Player player = (Player) sender;
+        player.sendMessage("rpgshop.test");
         return true;
     }
 

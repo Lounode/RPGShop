@@ -9,4 +9,73 @@
 
 # The language for this plugin.
 # String (possible values: "zh_cn", "en_us")
+# Default: zh_cn
 language: zh_cn
+
+# WIP
+# There has two different GUI layout
+# fast: less item input and output but editing fast
+# heavy: full functions but editing slowly
+# String (possible values: "fast", "heavy")
+# Default: fast
+editor_mode: fast
+
+#WIP
+economy:
+  # WIP
+  # Is the eco number force an integer
+  # Default: false
+  integer-eco: false
+
+  # To display big number like this:
+  # e.g. 123000000 -> 12.3e7
+  #
+  # Default: false
+  scientific_notation: false
+
+  thousands-separator: ','
+  # 100000000
+  # Interval 3(Common): 100,000,000
+  # Interval 4(Chinese): 1,0000,0000
+  # Default: 3
+  separator_interval: 3
+
+# WIP
+# Sql-support
+mysql:
+  # Enable MySQL
+  # Boolean
+  # Default: false
+  enabled: false
+
+  # MySQL Database Hostname
+  # String (possible values: 127.0.0.1, localhost)
+  # Default: 127.0.0.1
+  hostname: '127.0.0.1'
+
+  # MySQL Database Port
+  # Int
+  # Default: 3306
+  port: 3306
+
+  # MySQL Database Name
+  # String
+  # Default: RPGShop
+  database-name: 'RPGShop'
+
+  # MySQL Database Username
+  # Default: root
+  user-name: 'root'
+
+  # MySQL Database User Password
+  # Default:
+  user-password: ''
+
+  # If the database connection should use SSL
+  # You should enable this if your database supports SSL
+  # Default: false
+  use-ssl: false
+
+  # The number of connections to make to the database
+  # Default: 3
+  connection-pool-size: 3

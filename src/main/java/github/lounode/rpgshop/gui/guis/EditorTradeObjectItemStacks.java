@@ -5,7 +5,6 @@ import github.lounode.rpgshop.gui.Button;
 import github.lounode.rpgshop.gui.ButtonClickEvent;
 import github.lounode.rpgshop.gui.MultiPageInventory;
 import github.lounode.rpgshop.gui.events.GUICloseEvent;
-import github.lounode.rpgshop.i18n.RPGI18N;
 import github.lounode.rpgshop.shop.TradeType;
 import github.lounode.rpgshop.shop.tradeobjects.TradeObjectItemStacks;
 import org.bukkit.Material;
@@ -26,14 +25,14 @@ public class EditorTradeObjectItemStacks {
         MultiPageInventory inv = new MultiPageInventory(
                 RPGShop.getInstance().guiManager,
                 45,
-                RPGI18N.GUI_TITLE_EDIT_ITEMS.get(),
+                RPGShop.getInstance().getI18N("gui.title.edit_items"),
                 true
         );
         inv.setDenyAnyClick(false);
         // 创建返回按钮
         ItemStack backButton = new ItemStack(Material.BARRIER);
         ItemMeta backMeta = backButton.getItemMeta();
-        backMeta.setDisplayName(RPGI18N.TRADE_BUTTON_BACK.get());
+        backMeta.setDisplayName(RPGShop.getInstance().getI18N("gui.button.trade_back"));
         backButton.setItemMeta(backMeta);
 
         Button back = new Button(backButton);

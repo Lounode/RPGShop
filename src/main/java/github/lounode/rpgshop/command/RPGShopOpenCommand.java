@@ -2,7 +2,6 @@ package github.lounode.rpgshop.command;
 
 import github.lounode.rpgshop.RPGShop;
 import github.lounode.rpgshop.gui.guis.GUIShop;
-import github.lounode.rpgshop.i18n.RPGI18N;
 import github.lounode.rpgshop.shop.Shop;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -21,11 +20,11 @@ public class RPGShopOpenCommand extends RPGShopCommand{
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         args = Arrays.copyOfRange(args, 1, args.length);
         if (args.length < 1 || args.length > 2) {
-            sender.sendMessage(RPGI18N.HELP_OPEN.get());
+            sender.sendMessage(plugin.getI18N("common.help_open"));
             return false;
         }
         if (!(sender instanceof Player) && args.length != 2) {
-            sender.sendMessage(RPGI18N.HELP_OPEN.get());
+            sender.sendMessage(plugin.getI18N("common.help_open"));
             return false;
         }
         String id = args[0];
@@ -35,7 +34,7 @@ public class RPGShopOpenCommand extends RPGShopCommand{
             openPlayer = Bukkit.getPlayer(args[1]);
         }
         if (shop == null) {
-            sender.sendMessage(RPGI18N.MESSAGE_NOT_FOUND_SHOP_ID.get());
+            sender.sendMessage(plugin.getI18N("message.not_found_shop"));
             return false;
         }
         GUIShop gui = new GUIShop(shop);

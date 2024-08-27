@@ -1,6 +1,7 @@
 package github.lounode.rpgshop.gui;
 
 import github.lounode.rpgshop.RPGShop;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -8,7 +9,8 @@ import org.bukkit.inventory.InventoryHolder;
 import java.util.HashMap;
 
 public class GUIManager {
-    public RPGShop plugin;
+    @Getter
+    private RPGShop plugin;
     private HashMap<Player, HashMap<InventoryHolder, GUIChest>> guis = new HashMap<>();
 
     public void onEnable(RPGShop plugin) {
