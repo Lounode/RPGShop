@@ -1,6 +1,8 @@
 package github.lounode.rpgshop.gui;
 
 import github.lounode.rpgshop.gui.events.GUIOpenEvent;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MultiPageInventory extends GUI {
+    @Getter
+    @Setter
     private int page;
     private ItemStack prevBtnSkin;
     private ItemStack nextBtnSkin;
@@ -185,12 +189,6 @@ public class MultiPageInventory extends GUI {
         } catch (IndexOutOfBoundsException e) {
             return null;
         }
-    }
-    public int getPage () {
-        return page;
-    }
-    public void setPage (int page) {
-        this.page = page;
     }
     public void onInventoryClick(InventoryClickEvent event) {
         if (!event.isCancelled() && getHolder().equals(event.getInventory().getHolder())) {

@@ -48,7 +48,7 @@ public final class RPGShop extends BukkitPlugin<RPGShop> {
 
     @Override
     public void onLoad() {
-
+        configManager.onEnable(this);
 
         String languageCode = getConfig().getString("language","en_us");
         getI18N().reloadMessages(languageCode);
@@ -102,7 +102,7 @@ public final class RPGShop extends BukkitPlugin<RPGShop> {
 
         shopManager.onEnable(this);
 
-        configManager.onEnable(this);
+
         guiManager.onEnable(this);
 
 

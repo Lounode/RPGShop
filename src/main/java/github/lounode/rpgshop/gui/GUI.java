@@ -5,6 +5,7 @@ import github.lounode.rpgshop.gui.events.GUICloseEvent;
 import github.lounode.rpgshop.gui.events.GUIOpenCallback;
 import github.lounode.rpgshop.gui.events.GUIOpenEvent;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -20,13 +21,21 @@ public abstract class GUI implements Listener {
     private GUIManager manager;
     private List<GUIOpenCallback> openCallbacks;
     private List<GUICloseCallback> closeCallbacks;
+    @Getter
     protected Inventory inventory;
+    @Setter
+    @Getter
     private List<Slot> slots;
     private GUIHolder _holder;
+    @Setter
     boolean denyAnyClick;
+    @Setter
     boolean denyGUIClick;
+    @Setter
     boolean denyInvClick;
+    @Getter
     private String title;
+    @Getter
     private int size;
     public GUI (GUIManager manager, int size, String title) {
         this.manager = manager;
@@ -60,26 +69,7 @@ public abstract class GUI implements Listener {
     public int getNextMultipleOfNine(int number) {
         return (number % 9 == 0) ? number : ((number / 9) + 1) * 9;
     }
-    public void setDenyAnyClick(boolean type) {
-        this.denyAnyClick = type;
-    }
-    public void setDenyGUIClick(boolean type) {
-        this.denyGUIClick = type;
-    }
-    public void setDenyInvClick (boolean type) {
-        this.denyInvClick = type;
-    }
 
-    public Inventory getInventory() {
-        return inventory;
-    }
-    public int getSize() {
-        return size;
-    }
-
-    public String getTitle() {
-        return title;
-    }
     public boolean addListener (GUIOpenCallback callback) {
         return this.openCallbacks.add(callback);
     }
@@ -113,13 +103,6 @@ public abstract class GUI implements Listener {
         return _holder;
     }
 
-    public List<Slot> getSlots() {
-        return slots;
-    }
-
-    public void setSlots(List<Slot> slots) {
-        this.slots = slots;
-    }
     public void resetSlots() {
         List<Slot> empty = new ArrayList<>();
         for (int i = 1; i <= getSize(); i++) {

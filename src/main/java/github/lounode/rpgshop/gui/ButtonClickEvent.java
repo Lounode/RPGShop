@@ -1,5 +1,6 @@
 package github.lounode.rpgshop.gui;
 
+import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
@@ -21,6 +22,7 @@ public class ButtonClickEvent extends InventoryClickEvent {
         super(view, type, slot, click, action, key);
     }
     private GUI gui;
+    @Getter
     private Button button;
 
     public GUI getGUI() {
@@ -29,9 +31,7 @@ public class ButtonClickEvent extends InventoryClickEvent {
     public Player getPlayer() {
         return (Player) getView().getPlayer();
     }
-    public Button getButton() {
-        return button;
-    }
+
     public int getRealSlotIndex () {
         if (!(getGUI() instanceof MultiPageInventory)) {
             return getRawSlot();

@@ -468,28 +468,6 @@ public class EditorTrade {
 
         return true;
     }
-
-    private boolean btnEventEditRewardItems(ButtonClickEvent event) {
-        TradeObjectItemStacks reward = trade.getReward(TradeObjectItemStacks.class);
-        if (reward == null) {
-            reward = new TradeObjectItemStacks();
-            trade.addReward(reward);
-        }
-        reward.edit(event.getPlayer());
-
-        return true;
-    }
-    private boolean btnEventSwitchCanBuy(ButtonClickEvent event) {
-        trade.setBuy(!trade.canBuy());
-        open(event.getPlayer());
-        return true;
-    }
-
-    private boolean btnEventSwitchCanSell(ButtonClickEvent event) {
-        trade.setSell(!trade.canSell());
-        open(event.getPlayer());
-        return true;
-    }
     private boolean btnEventSwitchCanInfinity(ButtonClickEvent event) {
         trade.setInfinity(!trade.canInfinity());
         open(event.getPlayer());

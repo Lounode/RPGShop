@@ -1,9 +1,14 @@
 package github.lounode.rpgshop.gui;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.inventory.ItemStack;
 
 public class Slot {
+    @Setter
+    @Getter
     private Button button;
+    @Setter
     private ItemStack item;
     public ItemStack getItemStack() {
         if (item != null) {
@@ -18,15 +23,4 @@ public class Slot {
         this.item = item;
     }
     public Slot () {}
-    public Button getButton() {
-        return button;
-    }
-    public boolean setButton(Button button) {
-        this.button = button;
-        return true;
-    }
-    public boolean setItem (ItemStack item) {
-        this.item = item;
-        return true;
-    }
 }

@@ -1,5 +1,6 @@
 package github.lounode.rpgshop.gui;
 
+import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Button {
+    @Getter
     private ItemStack skin;
     public Button (ItemStack skin) {
         this.skin = skin;
@@ -32,9 +34,6 @@ public class Button {
     }
     public boolean addClickListener(ButtonClickCallback listener) {
         return onClick.add(listener);
-    }
-    public ItemStack getSkin() {
-        return skin;
     }
 
 }

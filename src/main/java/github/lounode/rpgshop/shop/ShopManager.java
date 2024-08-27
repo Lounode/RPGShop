@@ -1,6 +1,7 @@
 package github.lounode.rpgshop.shop;
 
 import github.lounode.rpgshop.RPGShop;
+import lombok.Getter;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -15,6 +16,7 @@ import java.util.List;
 
 public class ShopManager {
     private RPGShop plugin;
+    @Getter
     private List<Shop> shops = new ArrayList<>();
     private List<Shop> shopsBackup = new ArrayList<>();
     public void onEnable(RPGShop plugin) {
@@ -132,9 +134,7 @@ public class ShopManager {
         }
         shopsBackup = backup;
     }
-    public List<Shop> getShops () {
-        return shops;
-    }
+
     public List<Shop> getStableShops () {
         return shopsBackup;
     }

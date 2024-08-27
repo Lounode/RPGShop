@@ -2,6 +2,7 @@ package github.lounode.rpgshop.utils;
 
 
 import github.lounode.rpgshop.RPGShop;
+import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -9,6 +10,7 @@ import java.io.File;
 
 public class ConfigManager {
     private RPGShop plugin;
+    @Getter
     private FileConfiguration config;
     public void onEnable(RPGShop plugin) {
         this.plugin = plugin;
@@ -40,8 +42,5 @@ public class ConfigManager {
             plugin.saveResource("config.yml", false);
         }
         config = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "config.yml"));
-    }
-    public FileConfiguration getConfig() {
-        return config;
     }
 }

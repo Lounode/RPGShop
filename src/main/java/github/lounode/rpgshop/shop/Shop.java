@@ -1,6 +1,8 @@
 package github.lounode.rpgshop.shop;
 
 import com.google.common.base.Strings;
+import lombok.Getter;
+import lombok.Setter;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.ChatColor;
@@ -16,42 +18,18 @@ public class Shop implements Cloneable, ConfigurationSerializable {
     private String id;
     private String name;
     private int row;
+    @Setter
+    @Getter
     private String createTime;
+    @Setter
+    @Getter
     private String owner;
 
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    public String getLastEditTime() {
-        return lastEditTime;
-    }
-
-    public void setLastEditTime(String lastEditTime) {
-        this.lastEditTime = lastEditTime;
-    }
-
-    public String getLastEditor() {
-        return lastEditor;
-    }
-
-    public void setLastEditor(String lastEditor) {
-        this.lastEditor = lastEditor;
-    }
-
+    @Setter
+    @Getter
     private String lastEditTime;
+    @Setter
+    @Getter
     private String lastEditor;
     private Inventory lastInv;
     private List<Trade> trades = new ArrayList<>();

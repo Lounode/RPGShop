@@ -1,10 +1,12 @@
 package github.lounode.rpgshop.event;
 
+import lombok.Setter;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class RSEvent extends Event implements Cancellable {
+    @Setter
     private Event.Result result;
     private String message;
     private static final HandlerList handlers = new HandlerList();
@@ -12,10 +14,6 @@ public class RSEvent extends Event implements Cancellable {
     @Override
     public HandlerList getHandlers() {
         return handlers;
-    }
-
-    public void setResult(Event.Result newResult) {
-        this.result = newResult;
     }
 
     public Event.Result getResult() {
