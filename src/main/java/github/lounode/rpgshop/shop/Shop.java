@@ -1,9 +1,9 @@
 package github.lounode.rpgshop.shop;
 
 import com.google.common.base.Strings;
-import github.lounode.rpgshop.utils.Formater;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.Inventory;
 
@@ -80,7 +80,7 @@ public class Shop implements Cloneable, ConfigurationSerializable {
         this.name = title;
     }
     public String getTitle() {
-        return Formater.FormatMessage(name);
+        return ChatColor.translateAlternateColorCodes('&', name);
     }
     public int getSize() {
         return row * 9;
