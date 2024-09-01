@@ -13,7 +13,7 @@ public class GUIManager {
     private RPGShop plugin;
     private HashMap<Player, HashMap<InventoryHolder, GUIChest>> guis = new HashMap<>();
 
-    public void onEnable(RPGShop plugin) {
+    public GUIManager(RPGShop plugin) {
         this.plugin = plugin;
     }
 

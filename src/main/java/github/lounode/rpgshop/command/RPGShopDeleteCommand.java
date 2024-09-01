@@ -21,11 +21,11 @@ public class RPGShopDeleteCommand extends RPGShopCommand{
             return false;
         }
         String shopID = args[0];
-        if (plugin.shopManager.getShop(shopID) == null) {
+        if (plugin.getShopManager().getShop(shopID) == null) {
             sender.sendMessage(plugin.getI18N("message.delete_fail", args[0]));
             return false;
         }
-        plugin.shopManager.deleteShop(shopID);
+        plugin.getShopManager().deleteShop(shopID);
         sender.sendMessage(plugin.getI18N("message.delete_success"));
         return true;
     }

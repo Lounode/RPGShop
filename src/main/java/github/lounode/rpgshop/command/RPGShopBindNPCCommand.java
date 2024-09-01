@@ -25,7 +25,7 @@ public class RPGShopBindNPCCommand extends RPGShopCommand{
             return false;
         }
         Player player = (Player) sender;
-        Shop shop = plugin.shopManager.getShop(args[0]);
+        Shop shop = plugin.getShopManager().getShop(args[0]);
         NPC npc = CitizensUtil.GetNPCForward(player);
         if (shop == null || npc == null) {
             sender.sendMessage(plugin.getI18N("common.help_bind"));

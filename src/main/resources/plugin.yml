@@ -1,5 +1,5 @@
 name: RPGShop
-version: ${version}
+version: '${version}'
 main: github.lounode.rpgshop.RPGShop
 author: Lounode
 api-version: 1.12.2

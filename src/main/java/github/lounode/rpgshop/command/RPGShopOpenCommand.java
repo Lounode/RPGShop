@@ -28,7 +28,7 @@ public class RPGShopOpenCommand extends RPGShopCommand{
             return false;
         }
         String id = args[0];
-        Shop shop = plugin.shopManager.getShop(id);
+        Shop shop = plugin.getShopManager().getShop(id);
         Player openPlayer = null;
         if (args.length == 2) {
             openPlayer = Bukkit.getPlayer(args[1]);

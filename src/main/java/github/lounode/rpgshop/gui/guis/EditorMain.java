@@ -17,7 +17,7 @@ import java.util.List;
 public class EditorMain {
 
     public void open(Player player) {
-        List<Shop> shops = RPGShop.getInstance().shopManager.getShops();
+        List<Shop> shops = RPGShop.getInstance().getShopManager().getShops();
         //GUIHolder holder = new GUIHolder(RPGShop.getInstance().guiManager);
         MultiPageInventory inv = new MultiPageInventory(
                 RPGShop.getInstance().guiManager, shops.size(),
@@ -39,7 +39,7 @@ public class EditorMain {
             ));
             if (shop.getLastEditTime() != null){
                 lore.add("§r");
-                lore.add(RPGShop.getInstance().getI18N("gui.info.editor_display_last_edit_time",
+                lore.add(RPGShop.getInstance().getI18N("gui.info.display_last_edit",
                         shop.getLastEditor(),
                         shop.getLastEditTime()
                 ));
@@ -57,7 +57,8 @@ public class EditorMain {
     private boolean btnEventEditShop(ButtonClickEvent event) {
         Player player = event.getPlayer();
         int slot = event.getRealSlotIndex();
-        List<Shop> shops = RPGShop.getInstance().shopManager.getShops();
+
+        List<Shop> shops = RPGShop.getInstance().getShopManager().getShops();
 
         Shop shop = shops.get(slot);
         if (shop == null) {

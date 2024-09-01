@@ -24,6 +24,7 @@ public class RPGShopCommandExecutor implements CommandExecutor {
         this.subCommands.add(new RPGShopEditorCommand(plugin));
         this.subCommands.add(new RPGShopTestCommand(plugin));
         this.subCommands.add(new RPGShopOpenCommand(plugin));
+        this.subCommands.add(new RPGShopMigrateCommand(plugin));
         if (RPGShop.getInstance().isCitizens()) {
             this.subCommands.add(new RPGShopBindNPCCommand(plugin));
         }

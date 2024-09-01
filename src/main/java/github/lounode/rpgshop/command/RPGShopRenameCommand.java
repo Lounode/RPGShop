@@ -24,14 +24,14 @@ public class RPGShopRenameCommand extends RPGShopCommand{
         String newName = args[1];
         String shopID = args[0];
 
-        Shop shopToRename = plugin.shopManager.getShop(shopID);
+        Shop shopToRename = plugin.getShopManager().getShop(shopID);
         if (shopToRename == null) {
             sender.sendMessage(plugin.getI18N("message.rename_fail", shopID));
             return false;
         }
         sender.sendMessage(plugin.getI18N("message.rename_success", shopToRename.getTitle(), newName));
         shopToRename.setTitle(newName);
-        plugin.shopManager.saveShops();
+        plugin.getShopManager().saveShops();
         return true;
     }
 }

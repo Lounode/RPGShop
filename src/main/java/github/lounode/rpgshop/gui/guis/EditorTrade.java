@@ -426,8 +426,8 @@ public class EditorTrade {
     }
     private boolean btnEventCancel(ButtonClickEvent event) {
         String id = trade.getShop().getID();
-        RPGShop.getInstance().shopManager.rollBackChanges();
-        Shop shop = RPGShop.getInstance().shopManager.getShop(id);
+        RPGShop.getInstance().getShopManager().rollBackChanges();
+        Shop shop = RPGShop.getInstance().getShopManager().getShop(id);
         EditorShop editorShop = new EditorShop(shop);
         editorShop.open(event.getPlayer());
 
@@ -443,7 +443,7 @@ public class EditorTrade {
         String editTime = sdf.format(date);
 
         trade.getShop().setLastEditTime(editTime);
-        RPGShop.getInstance().shopManager.saveShops();
+        RPGShop.getInstance().getShopManager().updateShop(trade.getShop());
         EditorShop editorShop = new EditorShop(trade.getShop());
         editorShop.open(event.getPlayer());
         return true;

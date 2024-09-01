@@ -19,7 +19,7 @@ public class RPGShopReloadCommand extends RPGShopCommand{
         if (event.isCancelled()) {
 
         }
-        if (plugin.configManager.reloadConfigs()){
+        if (plugin.getConfigManager().reloadConfigs()){
             float time = System.currentTimeMillis() - startTime;
             sender.sendMessage(plugin.getI18N("message.plugin_reload", time));
             return true;

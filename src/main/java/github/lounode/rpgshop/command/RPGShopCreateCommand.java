@@ -28,6 +28,9 @@ public class RPGShopCreateCommand extends RPGShopCommand{
             sender.sendMessage(plugin.getI18N("message.create_invalid_id"));
             return false;
         }
+        if (plugin.getShopManager().getShop(args[0]) != null) {
+            sender.sendMessage(plugin.getI18N("message.create_already_exists", args[0]));
+        }
         if (!isNumeric(args[1])) {
             sender.sendMessage(plugin.getI18N("message.create_invalid_number"));
             return false;
@@ -43,14 +46,10 @@ public class RPGShopCreateCommand extends RPGShopCommand{
         Date date = new Date();
         String createTime = sdf.format(date);
 
-        Shop shop = plugin.shopManager.createShop(sender, id ,row, title);
-        if (shop == null){
-            sender.sendMessage(plugin.getI18N("message.save_fail", id + ".yml", plugin.getI18N("message.reason_already")));
-            return false;
-        }
+        Shop shop = new Shop(id, row, title);
         shop.setOwner(owner);
         shop.setCreateTime(createTime);
-        plugin.shopManager.saveShops();
+        plugin.getShopManager().addShop(shop);
 
         sender.sendMessage(plugin.getI18N("message.create_success", row, title, id));
         return true;

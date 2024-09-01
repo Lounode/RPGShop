@@ -39,19 +39,16 @@ public final class RPGShop extends BukkitPlugin<RPGShop> {
     private boolean playerPoints;
     @Getter
     private boolean citizens;
-    public ConfigManager configManager = new ConfigManager();
     @Getter
-    public ShopManager shopManager = new ShopManager();
-    public GUIManager guiManager = new GUIManager();
-
-
+    private ShopManager shopManager = new ShopManager(this);
+    @Getter
+    public GUIManager guiManager = new GUIManager(this);
+    @Getter
+    private ConfigManager configManager = new ConfigManager(this);
 
     @Override
     public void onLoad() {
-        configManager.onEnable(this);
-
-        String languageCode = getConfig().getString("language","en_us");
-        getI18N().reloadMessages(languageCode);
+        getLogger().info(getWelcome());
 
         ConfigurationSerialization.registerClass(ItemStackCounter.class, "ItemStackCounter");
         ConfigurationSerialization.registerClass(ItemPair.class, "ItemPair");
@@ -66,15 +63,6 @@ public final class RPGShop extends BukkitPlugin<RPGShop> {
 
     @Override
     public void onEnable() {
-        getLogger().info(getWelcome());
-        /*
-        if (isDebugVersion()) {
-            DATA_GENERATOR.onInitializeDataGenerator();
-            DATA_GENERATOR.generatorAll();
-        }
-        */
-
-
         if (Bukkit.getPluginManager().isPluginEnabled(VAULT)) {
             try {
                 VaultAPI.setup();
@@ -100,21 +88,17 @@ public final class RPGShop extends BukkitPlugin<RPGShop> {
             getLogger().warning("No Find Citizens!");
         }
 
-        shopManager.onEnable(this);
-
-
-        guiManager.onEnable(this);
-
+        configManager.reloadConfigs();
 
         this.getCommand("rpgshop").setExecutor(new RPGShopCommandExecutor(this));
+
+
 
     }
 
     @Override
     public void onDisable() {
 
-        configManager.onDisable();
-        shopManager.onDisable();
     }
 
     private String getWelcome() {
@@ -145,11 +129,10 @@ public final class RPGShop extends BukkitPlugin<RPGShop> {
     public static RPGShop getInstance() {
         return (RPGShop) instance;
     }
-
     @Override
     public String getI18N(@Translatable String key, Object... args) {
         String result = super.getI18N(key, args);
-        result = result.replace("{PREFIX}", super.getI18N("common.prefix"));
+        result = result.replace("%PREFIX%", super.getI18N("common.prefix"));
         result = ChatColor.translateAlternateColorCodes('&', result);
         return result;
     }

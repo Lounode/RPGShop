@@ -40,42 +40,32 @@ economy:
   # Default: 3
   separator_interval: 3
 
-# WIP
-# Sql-support
-mysql:
-  # Enable MySQL
-  # Boolean
-  # Default: false
-  enabled: false
+datasource:
 
-  # MySQL Database Hostname
-  # String (possible values: 127.0.0.1, localhost)
-  # Default: 127.0.0.1
-  hostname: '127.0.0.1'
+  # Shop DataSource
+  # String (possible values: YAML, SQLite)
+  # Default: YAML
+  source: 'SQLite'
 
-  # MySQL Database Port
-  # Int
-  # Default: 3306
-  port: 3306
-
-  # MySQL Database Name
+  # SQL Database Name
   # String
   # Default: RPGShop
   database-name: 'RPGShop'
 
-  # MySQL Database Username
+  # SQL Database Hostname
+  # String (possible values: 127.0.0.1, localhost)
+  # Default: 127.0.0.1
+  hostname: '127.0.0.1'
+
+  # SQL Database Port
+  # Int
+  # Default: 3306
+  port: 3306
+
+  # SQL Database Username
   # Default: root
   user-name: 'root'
 
-  # MySQL Database User Password
+  # SQL Database User Password
   # Default:
   user-password: ''
-
-  # If the database connection should use SSL
-  # You should enable this if your database supports SSL
-  # Default: false
-  use-ssl: false
-
-  # The number of connections to make to the database
-  # Default: 3
-  connection-pool-size: 3

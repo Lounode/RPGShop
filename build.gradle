@@ -66,6 +66,19 @@ tasks.withType(JavaCompile).configureEach {
     }
 }
 
+task buildDebugJar(type: Copy) {
+    dependsOn build
+    from("$rootDir"+'/build/libs')
+    into("$rootDir"+'/run/plugins').rename { "${project.name}-${version}-debug.jar" }
+
+}
+task buildReleaseJar(type: Copy) {
+    dependsOn build
+    from("$rootDir"+'/build/libs')
+    into("$rootDir"+'/build').rename { "${project.name}-${version}.jar" }
+
+}
+
 processResources {
     def props = [
             version: version
